@@ -2,4 +2,10 @@
 title: "Projekt"
 output: html_document
 ---
+```{r}
+Projek
+sdft
+x <- 1
 
+print()
+```
