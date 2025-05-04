@@ -7,6 +7,8 @@ editor: visual
 # Biblioteki
 
 ```{r}
+#| message: false
+#| warning: false
 library(tidyverse)
 library(readxl)
 library(lmtest)
@@ -30,7 +32,6 @@ dane <- dane %>%
            str_replace(",", "") %>%          
            str_replace(",", "."), x6 = str_remove_all(x6,"\\s"), across(c(x7, x8), ~ str_replace(., "\\.", ""))) %>% 
   mutate(across(c(x5,x6,x7,x8), ~ as.numeric(.x)))
-dane
 
 ```
 
@@ -47,7 +48,6 @@ summary(model) %>%
 ### Krok 2
 
 ```{r}
-
 model <- lm(y ~ x1 + x2 + x4 + x5 + x6 + x7 + x8, data = dane)
 summary(model)
 ```
@@ -75,10 +75,25 @@ summary(model_koncowy)
 
 # Modele jednowymiarowe
 
+### Dla x1
+
 ```{r}
-ggplot(dane, aes(y = y, x = x1))+
+wykres1 <- ggplot(dane, aes(y = y, x = x1))+
   geom_point()+
-  geom_smooth(method = "lm")
+  geom_smooth(method = "lm", se = F)+
+  theme_minimal()
+ggsave("wykres1.png", plot = wykres1, width = 8, height = 6, dpi = 300)
+```
+
+### Dla x2
+
+```{r}
+wykres2 <- ggplot(dane, aes(y = y, x = x2))+
+  geom_point()+
+  geom_smooth(method = "lm", se = F)+
+  theme_minimal()
+wykres2
+#ggsave("wykres2.png", plot = wykres2, width = 8, height = 6, dpi = 300)
 ```
 
 # Testy
@@ -86,7 +101,16 @@ ggplot(dane, aes(y = y, x = x1))+
 ### Liniowość – Test RESEST
 
 ```{r}
-resettest(model_koncowy) 
+reset <- resettest(model_koncowy) 
+
+reset_df <- data.frame(
+  "Statystyka testowa" = reset$statistic,
+  "Wartość p" = reset$p.value,
+  "Stopnie swobody 1" = reset$parameter[1],
+  "Stopnie swobody 2" = reset$parameter[2],
+  check.names = FALSE
+)
+xtable(reset_df, caption = "Wyniki testu RESET dla modelu końcowego", digits = 4)
 ```
 
 ### Homoskedastyczność - Test Goldfelda-Quandta
@@ -94,7 +118,7 @@ resettest(model_koncowy)
 ```{r}
 gq <- gqtest(model_koncowy)
 
-# Tworzymy ramkę danych z wynikami testu
+
 gq_df <- data.frame(
   `statystyka` = gq$statistic,
   `df1` = gq$parameter[1],
@@ -103,7 +127,7 @@ gq_df <- data.frame(
   check.names = FALSE
 )
 
-# Tworzymy tabelę LaTeX
+
 xtable(gq_df, caption = "Test Goldfelda–Quandta", digits = 4)
 ```
 
