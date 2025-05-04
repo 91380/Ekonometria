@@ -20,6 +20,7 @@ library(xtable)
 
 ```{r}
 dane <- read_xlsx("../Ekonometria_projekt/dane/Dane.xlsx")
+dane
 ```
 
 ## Czyszczenie danych
@@ -27,12 +28,14 @@ dane <- read_xlsx("../Ekonometria_projekt/dane/Dane.xlsx")
 ```{r}
 dane <- dane %>% 
   rename(y = 3) %>% 
-  rename_with(.cols = 4:ncol(.), .fn = ~ paste0("x", seq_along(.))) %>% 
-  mutate(x5 = x5 %>%
-           str_replace(",", "") %>%          
-           str_replace(",", "."), x6 = str_remove_all(x6,"\\s"), across(c(x7, x8), ~ str_replace(., "\\.", ""))) %>% 
-  mutate(across(c(x5,x6,x7,x8), ~ as.numeric(.x)))
+  rename_with(.cols = 4:ncol(.), .fn = ~ paste0("x", seq_along(.))) 
+  #mutate(x5 = x5 %>%
+    #       str_replace(",", "") %>% 
+     #      str_replace(".", ""), x6 = str_remove_all(x6,"\\s"), across(c(x7, x8), ~ str_replace(., "\\.", "")))%>% 
 
+  
+ #mutate(across(c(x5,x6,x7,x8), ~ as.numeric(.x))) 
+dane
 ```
 
 # Regresja Krokowa
@@ -41,41 +44,54 @@ dane <- dane %>%
 
 ```{r}
 model <- lm(y ~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8, data = dane)
-summary(model) %>% 
-  xtable()
+summary(model) #%>% xtable()
 ```
 
 ### Krok 2
 
 ```{r}
-model <- lm(y ~ x1 + x2 + x4 + x5 + x6 + x7 + x8, data = dane)
-summary(model)
+model <- lm(y ~ x1 + x2 + x3 + x4 + x5 + x7 + x8, data = dane)
+summary(model) 
 ```
 
 ### Krok 3
 
 ```{r}
-model <- lm(y ~ x1 + x2 + x4 + x5 + x6 + x8, data = dane)
-summary(model)
+model <- lm(y ~ x1 + x3 + x4 + x5 + x7 + x8, data = dane)
+summary(model) 
 ```
 
 ### Krok 4
 
 ```{r}
-model <- lm(y ~ x1 + x2 + x4 + x5 + x8, data = dane)
+model <- lm(y ~ x1 + x3 + x5 + x7 + x8, data = dane)
 summary(model)
 ```
 
 ### Krok 5
 
 ```{r}
-model_koncowy <- lm(y ~ x1 + x2 + x5 + x8, data = dane)
+model <- lm(y ~ x1 + x3 + x7 + x8, data = dane)
+summary(model)
+```
+
+### Krok 6
+
+```{r}
+model <- lm(y ~ x1 + x7 + x8, data = dane)
+summary(model)
+```
+
+### Krok 7
+
+```{r}
+model_koncowy <- lm(y ~ x1 + x8, data = dane)
 summary(model_koncowy)
 ```
 
-# Modele jednowymiarowe
+# Modele jednowymiarowe i  trendy
 
-### Dla x1
+### Dla x1 trendy
 
 ```{r}
 wykres1 <- ggplot(dane, aes(y = y, x = x1))+
@@ -85,7 +101,23 @@ wykres1 <- ggplot(dane, aes(y = y, x = x1))+
 ggsave("wykres1.png", plot = wykres1, width = 8, height = 6, dpi = 300)
 ```
 
-### Dla x2
+### Dla x1 model
+
+```{r}
+model_x1 <- lm(y~x1, data = dane)
+summary(model_x1) %>% 
+  xtable()
+```
+
+### Dla x2 model
+
+```{r}
+model_x2 <- lm(y~x2, data = dane)
+summary(model_x2) %>% 
+  xtable()
+```
+
+### Dla x2 wykres
 
 ```{r}
 wykres2 <- ggplot(dane, aes(y = y, x = x2))+
@@ -94,6 +126,17 @@ wykres2 <- ggplot(dane, aes(y = y, x = x2))+
   theme_minimal()
 wykres2
 #ggsave("wykres2.png", plot = wykres2, width = 8, height = 6, dpi = 300)
+```
+
+```{r}
+options(scipen = 999)
+dane$y * 1e9
+summary(lm(y~x8, data = dane))
+ggplot(dane, aes(y = y, x = x8))+
+  geom_point()+
+  geom_smooth(method = "lm", se = F)+  # normalny zapis
+  scale_y_continuous(limits = range(dane$y))+
+  theme_minimal()
 ```
 
 # Testy
@@ -111,6 +154,7 @@ reset_df <- data.frame(
   check.names = FALSE
 )
 xtable(reset_df, caption = "Wyniki testu RESET dla modelu końcowego", digits = 4)
+reset
 ```
 
 ### Homoskedastyczność - Test Goldfelda-Quandta
@@ -129,6 +173,7 @@ gq_df <- data.frame(
 
 
 xtable(gq_df, caption = "Test Goldfelda–Quandta", digits = 4)
+gq
 ```
 
 ### Autokorelacja składników losowych – Test Durbina-Watsona
