@@ -19,7 +19,7 @@ library(xtable)
 # Wczytywanie danych i czyszczenie
 
 ```{r}
-dane <- read_xlsx("../Ekonometria_projekt/dane/Dane.xlsx")
+dane <- read_xlsx("../Ekonometria_projekt/dane/Dane2.xlsx")
 dane
 ```
 
@@ -27,9 +27,10 @@ dane
 
 ```{r}
 dane <- dane %>% 
-  rename(y = 3) %>% 
-  rename_with(.cols = 4:ncol(.), .fn = ~ paste0("x", seq_along(.))) 
-  #mutate(x5 = x5 %>%
+  rename(y = 4) %>% 
+  rename_with(.cols = 5:ncol(.), .fn = ~ paste0("x", seq_along(.)))
+ 
+        
     #       str_replace(",", "") %>% 
      #      str_replace(".", ""), x6 = str_remove_all(x6,"\\s"), across(c(x7, x8), ~ str_replace(., "\\.", "")))%>% 
 
@@ -43,53 +44,46 @@ dane
 ### Krok 1
 
 ```{r}
-model <- lm(y ~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8, data = dane)
+model <- lm(y ~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9, data = dane)
 summary(model) #%>% xtable()
 ```
 
 ### Krok 2
 
 ```{r}
-model <- lm(y ~ x1 + x2 + x3 + x4 + x5 + x7 + x8, data = dane)
+model <- lm(y ~ x1 + x2 + x3 + x5 + x6 + x7 + x8 + x9, data = dane)
 summary(model) 
 ```
 
 ### Krok 3
 
 ```{r}
-model <- lm(y ~ x1 + x3 + x4 + x5 + x7 + x8, data = dane)
+model <- lm(y ~ x2 + x3 + x5 + x6 + x7 + x8 + x9, data = dane)
 summary(model) 
 ```
 
 ### Krok 4
 
 ```{r}
-model <- lm(y ~ x1 + x3 + x5 + x7 + x8, data = dane)
+model <- lm(y ~ x2 + x3 + x5 + x6 + x7 + x8, data = dane)
 summary(model)
 ```
 
 ### Krok 5
 
 ```{r}
-model <- lm(y ~ x1 + x3 + x7 + x8, data = dane)
+model <- lm(y ~ x2 + x3 + x5 + x7 + x8, data = dane)
 summary(model)
 ```
 
 ### Krok 6
 
 ```{r}
-model <- lm(y ~ x1 + x7 + x8, data = dane)
-summary(model)
-```
-
-### Krok 7
-
-```{r}
-model_koncowy <- lm(y ~ x1 + x8, data = dane)
+model_koncowy <- lm(y ~ x3 + x5 + x7 + x8, data = dane)
 summary(model_koncowy)
 ```
 
-# Modele jednowymiarowe i  trendy
+# Modele jednowymiarowe i trendy
 
 ### Dla x1 trendy
 
@@ -104,9 +98,11 @@ ggsave("wykres1.png", plot = wykres1, width = 8, height = 6, dpi = 300)
 ### Dla x1 model
 
 ```{r}
-model_x1 <- lm(y~x1, data = dane)
-summary(model_x1) %>% 
-  xtable()
+model_x1 <- lm(y~x7, data = dane)
+ggplot(dane, aes(x = Lata, y = x8))+
+  geom_point()+
+  geom_smooth(method = "lm")
+summary(model_x1) 
 ```
 
 ### Dla x2 model
@@ -120,7 +116,7 @@ summary(model_x2) %>%
 ### Dla x2 wykres
 
 ```{r}
-wykres2 <- ggplot(dane, aes(y = y, x = x2))+
+wykres2 <- ggplot(dane, aes(y = y, x = x9))+
   geom_point()+
   geom_smooth(method = "lm", se = F)+
   theme_minimal()
