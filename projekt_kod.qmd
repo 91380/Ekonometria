@@ -89,7 +89,7 @@ model_koncowy <- lm(y ~ x1 + x8, data = dane)
 summary(model_koncowy)
 ```
 
-# Modele jednowymiarowe i  trendy
+# Modele jednowymiarowe i trendy
 
 ### Dla x1 trendy
 
