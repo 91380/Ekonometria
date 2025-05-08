@@ -19,7 +19,7 @@ library(xtable)
 # Wczytywanie danych i czyszczenie
 
 ```{r}
-dane <- read_xlsx("../Ekonometria_projekt/dane/Dane.xlsx")
+dane <- read_xlsx("../Ekonometria_projekt/dane/Dane2.xlsx")
 dane
 ```
 
@@ -28,13 +28,13 @@ dane
 ```{r}
 dane <- dane %>% 
   rename(y = 3) %>% 
-  rename_with(.cols = 4:ncol(.), .fn = ~ paste0("x", seq_along(.))) 
-  #mutate(x5 = x5 %>%
-    #       str_replace(",", "") %>% 
-     #      str_replace(".", ""), x6 = str_remove_all(x6,"\\s"), across(c(x7, x8), ~ str_replace(., "\\.", "")))%>% 
-
-  
- #mutate(across(c(x5,x6,x7,x8), ~ as.numeric(.x))) 
+  rename_with(.cols = 4:ncol(.), .fn = ~ paste0("x", seq_along(.))) %>% 
+  mutate(
+    x4 = round(x4),
+    x6 = round(x6),
+    x7 = round(x7),
+    x8 = round(x8)
+  )
 dane
 ```
 
@@ -43,49 +43,42 @@ dane
 ### Krok 1
 
 ```{r}
-model <- lm(y ~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8, data = dane)
+model <- lm(y ~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9, data = dane)
 summary(model) #%>% xtable()
 ```
 
 ### Krok 2
 
 ```{r}
-model <- lm(y ~ x1 + x2 + x3 + x4 + x5 + x7 + x8, data = dane)
+model <- lm(y ~ x1 + x2 + x3 + x4 + x5 + x7 + x8 + x9, data = dane)
 summary(model) 
 ```
 
 ### Krok 3
 
 ```{r}
-model <- lm(y ~ x1 + x3 + x4 + x5 + x7 + x8, data = dane)
+model <- lm(y ~ x1 + x2 + x3 + x4 + x5 + x7 + x8, data = dane)
 summary(model) 
 ```
 
 ### Krok 4
 
 ```{r}
-model <- lm(y ~ x1 + x3 + x5 + x7 + x8, data = dane)
+model <- lm(y ~ x1 + x2 + x3 + x5 + x7 + x8, data = dane)
 summary(model)
 ```
 
 ### Krok 5
 
 ```{r}
-model <- lm(y ~ x1 + x3 + x7 + x8, data = dane)
+model <- lm(y ~ x1 + x2 + x5 + x7 + x8, data = dane)
 summary(model)
 ```
 
 ### Krok 6
 
 ```{r}
-model <- lm(y ~ x1 + x7 + x8, data = dane)
-summary(model)
-```
-
-### Krok 7
-
-```{r}
-model_koncowy <- lm(y ~ x1 + x8, data = dane)
+model_koncowy <- lm(y ~ x1 + x5 + x7 + x8, data = dane)
 summary(model_koncowy)
 ```
 
@@ -94,25 +87,29 @@ summary(model_koncowy)
 ### Dla x1 trendy
 
 ```{r}
-wykres1 <- ggplot(dane, aes(y = y, x = x1))+
+wykres1 <- ggplot(dane, aes(y = x1, x = Lata))+
   geom_point()+
   geom_smooth(method = "lm", se = F)+
   theme_minimal()
 ggsave("wykres1.png", plot = wykres1, width = 8, height = 6, dpi = 300)
+wykres1
 ```
 
 ### Dla x1 model
 
 ```{r}
-model_x1 <- lm(y~x1, data = dane)
+model_x1 <- lm(Lata~x1, data = dane)
+ggplot(dane, aes(x = Lata, y = x1))+
+  geom_point()+
+  geom_smooth(method = "lm", se = F)
 summary(model_x1) %>% 
   xtable()
 ```
 
-### Dla x2 model
+### Dla x5 model
 
 ```{r}
-model_x2 <- lm(y~x2, data = dane)
+model_x2 <- lm(Lata~x5, data = dane)
 summary(model_x2) %>% 
   xtable()
 ```
@@ -120,7 +117,7 @@ summary(model_x2) %>%
 ### Dla x2 wykres
 
 ```{r}
-wykres2 <- ggplot(dane, aes(y = y, x = x2))+
+wykres2 <- ggplot(dane, aes(y = x5, x = Lata))+
   geom_point()+
   geom_smooth(method = "lm", se = F)+
   theme_minimal()
@@ -153,7 +150,7 @@ reset_df <- data.frame(
   "Stopnie swobody 2" = reset$parameter[2],
   check.names = FALSE
 )
-xtable(reset_df, caption = "Wyniki testu RESET dla modelu końcowego", digits = 4)
+#xtable(reset_df, caption = "Wyniki testu RESET dla modelu końcowego", digits = 4)
 reset
 ```
 
