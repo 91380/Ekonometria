@@ -51,35 +51,35 @@ summary(model) #%>% xtable()
 
 ```{r}
 model <- lm(y ~ x1 + x2 + x3 + x4 + x5 + x7 + x8 + x9, data = dane)
-summary(model) 
+summary(model) #%>% xtable()
 ```
 
 ### Krok 3
 
 ```{r}
 model <- lm(y ~ x1 + x2 + x3 + x4 + x5 + x7 + x8, data = dane)
-summary(model) 
+summary(model) #%>% xtable()
 ```
 
 ### Krok 4
 
 ```{r}
 model <- lm(y ~ x1 + x2 + x3 + x5 + x7 + x8, data = dane)
-summary(model)
+summary(model) #%>% xtable()
 ```
 
 ### Krok 5
 
 ```{r}
 model <- lm(y ~ x1 + x2 + x5 + x7 + x8, data = dane)
-summary(model)
+summary(model) #%>% xtable()
 ```
 
 ### Krok 6
 
 ```{r}
 model_koncowy <- lm(y ~ x1 + x5 + x7 + x8, data = dane)
-summary(model_koncowy)
+summary(model_koncowy) #%>% xtable()
 ```
 
 # Modele jednowymiarowe i trendy
@@ -136,6 +136,19 @@ ggplot(dane, aes(y = y, x = x8))+
   theme_minimal()
 ```
 
+### dla x7 model
+
+```{r}
+model_x7 <- lm(Lata~x7, data = dane)
+summary(model_x7)
+```
+
+### dla x7 wykres
+
+### dla x8 model
+
+### dla x8 wykres
+
 # Testy
 
 ### Liniowość – Test RESEST
@@ -158,8 +171,6 @@ reset
 
 ```{r}
 gq <- gqtest(model_koncowy)
-
-
 gq_df <- data.frame(
   `statystyka` = gq$statistic,
   `df1` = gq$parameter[1],
@@ -176,14 +187,31 @@ gq
 ### Autokorelacja składników losowych – Test Durbina-Watsona
 
 ```{r}
-dwtest(model_koncowy)
+dw <- dwtest(model_koncowy)
+dw
+dw_df <- data.frame(
+  "statystyka" = dw$statistic,
+  "p-wartość" = dw$p.value,
+  check.names = FALSE
+)
+xtable(dw_df, caption = "Test Durbina-Watsona", digits = 4)
+
 ```
 
 ### Rozkład normalny reszt – Test JBT
 
 ```{r}
 reszty <- resid(model_koncowy)
-jarque.bera.test(reszty)
+jbt <- jarque.bera.test(reszty)
+
+model_JBT_df <- data.frame(
+  "statystyka" = jbt$statistic,
+  "p-wartość" = jbt$p.value,
+  check.names = FALSE
+)
+model_JBT_df
+xtable(model_JBT_df, caption = "Test Jarque-Bera", digits = 4)
+
 ```
 
 # Badanie dobroci modelu
