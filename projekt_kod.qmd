@@ -136,18 +136,49 @@ ggplot(dane, aes(y = y, x = x8))+
   theme_minimal()
 ```
 
-### dla x7 model
+### dla x7 
 
 ```{r}
 model_x7 <- lm(Lata~x7, data = dane)
-summary(model_x7)
+summary(model_x7) #%>% xtable()
+
+wykres3 <- ggplot(dane, aes(x = Lata, y = x7))+
+  geom_point()+
+  geom_smooth(method = "lm", se = F)+
+   labs(y = "Liczba patentów (w tysiącach)")+
+  theme_minimal()+
+  theme(
+    axis.title = element_text(size = 16),  # rozmiar tytułów osi
+    axis.text = element_text(size = 14),    # rozmiar liczb/etykiet osi
+     plot.background = element_rect(fill = "white", color = NA),
+    panel.background = element_rect(fill = "white", color = NA)
+  )
+wykres3
+
+ggsave("wykres3.png", plot = wykres3, width = 8, height = 6, dpi = 300)
 ```
 
-### dla x7 wykres
+### dla x8 
 
-### dla x8 model
+```{r}
+model_x8 <- lm(Lata~x8, data = dane)
+summary(model_x8) #%>% xtable()
 
-### dla x8 wykres
+wykres4 <- ggplot(dane, aes(x = Lata, y = x8))+
+  geom_point()+
+  geom_smooth(method = "lm", se = F)+
+   labs(y = "Liczba patentów (w tysiącach)")+
+  theme_minimal()+
+  theme(
+    axis.title = element_text(size = 16),  # rozmiar tytułów osi
+    axis.text = element_text(size = 14),    # rozmiar liczb/etykiet osi
+     plot.background = element_rect(fill = "white", color = NA),
+    panel.background = element_rect(fill = "white", color = NA)
+  )
+wykres4
+
+ggsave("wykres4.png", plot = wykres4, width = 8, height = 6, dpi = 300)
+```
 
 # Testy
 
