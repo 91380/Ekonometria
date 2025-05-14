@@ -33,7 +33,7 @@ dane <- dane %>%
     x4 = round(x4,2),
     x6 = round(x6,2),
     x7 = round(x7,2),
-    x8 = round(x8,2)
+    x8 = round(x8,1)
   )
 dane
 ```
@@ -50,36 +50,43 @@ summary(model) #%>% xtable()
 ### Krok 2
 
 ```{r}
-model <- lm(y ~ x1 + x2 + x3 + x4 + x5 + x7 + x8 + x9, data = dane)
+model <- lm(y ~ x1 + x2 + x3 + x5 + x6 + x7 + x8 + x9, data = dane)
 summary(model) #%>% xtable()
 ```
 
 ### Krok 3
 
 ```{r}
-model <- lm(y ~ x1 + x2 + x3 + x4 + x5 + x7 + x8, data = dane)
+model <- lm(y ~ x1 + x2 + x3 + x5 + x7 + x8 + x9, data = dane)
 summary(model) #%>% xtable()
 ```
 
 ### Krok 4
 
 ```{r}
-model <- lm(y ~ x1 + x2 + x3 + x5 + x7 + x8, data = dane)
+model <- lm(y ~ x1 + x3 + x5 + x7 + x8 + x9, data = dane)
 summary(model) #%>% xtable()
 ```
 
 ### Krok 5
 
 ```{r}
-model <- lm(y ~ x1 + x2 + x5 + x7 + x8, data = dane)
+model <- lm(y ~ x1 + x3 + x5 + x7 + x8, data = dane)
 summary(model) #%>% xtable()
 ```
 
 ### Krok 6
 
 ```{r}
-model_koncowy <- lm(y ~ x1 + x5 + x7 + x8, data = dane)
-summary(model_koncowy) #%>% xtable()
+model <- lm(y ~ x1 + x5 + x7 + x8, data = dane)
+summary(model) #%>% xtable()
+```
+
+### Krok 7
+
+```{r}
+model_koncowy <- lm(y ~ x1 + x7 + x8, data = dane)
+summary(model_koncowy)
 ```
 
 # Regresja krokowa 2
@@ -185,7 +192,7 @@ ggplot(dane, aes(y = y, x = x8))+
 #### dopasowanie liniowe (R\^2 = 0,621)
 
 ```{r}
-model_x7 <- lm(y~x7, data = dane)
+model_x7 <- lm(x7~Lata, data = dane)
 summary(model_x7) #%>% xtable()
 
 wykres3 <- ggplot(dane, aes(x = x7, y = y))+
@@ -200,7 +207,7 @@ wykres3 <- ggplot(dane, aes(x = x7, y = y))+
   )
 wykres3
 
-ggsave("wykres3.png", plot = wykres3, width = 8, height = 6, dpi = 300)
+#ggsave("wykres3.png", plot = wykres3, width = 8, height = 6, dpi = 300)
 ```
 
 #### dopasowanie hiperboliczne
