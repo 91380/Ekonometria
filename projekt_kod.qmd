@@ -40,97 +40,53 @@ dane
 
 # Regresja Krokowa
 
-### Krok 1
+### Krok 1 (x4)
 
 ```{r}
 model <- lm(y ~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9, data = dane)
 summary(model) #%>% xtable()
 ```
 
-### Krok 2
+### Krok 2 (x6)
 
 ```{r}
 model <- lm(y ~ x1 + x2 + x3 + x5 + x6 + x7 + x8 + x9, data = dane)
 summary(model) #%>% xtable()
 ```
 
-### Krok 3
+### Krok 3 (x2)
 
 ```{r}
 model <- lm(y ~ x1 + x2 + x3 + x5 + x7 + x8 + x9, data = dane)
 summary(model) #%>% xtable()
 ```
 
-### Krok 4
+### Krok 4 (x9)
 
 ```{r}
 model <- lm(y ~ x1 + x3 + x5 + x7 + x8 + x9, data = dane)
 summary(model) #%>% xtable()
 ```
 
-### Krok 5
+### Krok 5 (x3)
 
 ```{r}
 model <- lm(y ~ x1 + x3 + x5 + x7 + x8, data = dane)
 summary(model) #%>% xtable()
 ```
 
-### Krok 6
+### Krok 6 (x5)
 
 ```{r}
 model <- lm(y ~ x1 + x5 + x7 + x8, data = dane)
 summary(model) #%>% xtable()
 ```
 
-### Krok 7
+### Krok 7 (istotne)
 
 ```{r}
 model_koncowy <- lm(y ~ x1 + x7 + x8, data = dane)
-summary(model_koncowy)
-```
-
-# Regresja krokowa 2
-
-#### Krok 1 (x4)
-
-```{r}
-model_tmp <- lm(y ~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9, data = dane)
-summary(model_tmp) #%>% xtable()
-```
-
-#### krok 2 (x1)
-
-```{r}
-model_tmp <- lm(y ~ x1 + x2 + x3 + x5 + x6 + x7 + x8 + x9, data = dane)
-summary(model_tmp) #%>% xtable()
-```
-
-#### Krok 3 (x6)
-
-```{r}
-model_tmp <- lm(y ~ x2 + x3 + x5 + x6 + x7 + x8 + x9, data = dane)
-summary(model_tmp) #%>% xtable()
-```
-
-#### krok 4 ( x2)
-
-```{r}
-model_tmp <- lm(y ~ x2 + x3 + x5 + x7 + x8 + x9, data = dane)
-summary(model_tmp) #%>% xtable()
-```
-
-#### krok 5 (x9)
-
-```{r}
-model_tmp <- lm(y ~ x3 + x5 + x7 + x8 + x9, data = dane)
-summary(model_tmp) #%>% xtable()
-```
-
-#### krok 6 (wszystkie istotne)
-
-```{r}
-model_tmp_koncowy <- lm(y ~ x3 + x5 + x7 + x8, data = dane)
-summary(model_tmp_koncowy) #%>% xtable()
+summary(model_koncowy) #%>% xtable()
 ```
 
 # Modele jednowymiarowe i trendy
@@ -187,7 +143,7 @@ ggplot(dane, aes(y = y, x = x8))+
   theme_minimal()
 ```
 
-### dla x7 (ZMIENIŁEM Y ZAMIAST LAT)
+### dla x7
 
 #### dopasowanie liniowe (R\^2 = 0,621)
 
@@ -265,7 +221,7 @@ reset_df <- data.frame(
   "Stopnie swobody 2" = reset$parameter[2],
   check.names = FALSE
 )
-#xtable(reset_df, caption = "Wyniki testu RESET dla modelu końcowego", digits = 4)
+xtable(reset_df, caption = "Wyniki testu RESET dla modelu końcowego", digits = 4)
 reset
 ```
 
@@ -313,71 +269,6 @@ model_JBT_df <- data.frame(
 )
 model_JBT_df
 xtable(model_JBT_df, caption = "Test Jarque-Bera", digits = 4)
-
-```
-
-# Testy (nowe)
-
-### Liniowość – Test RESEST (nowy)
-
-```{r}
-reset_n <- resettest(model_tmp_koncowy) 
-
-reset_df_n <- data.frame(
-  "Statystyka testowa" = reset_n$statistic,
-  "Wartość p" = reset_n$p.value,
-  "Stopnie swobody 1" = reset_n$parameter[1],
-  "Stopnie swobody 2" = reset_n$parameter[2],
-  check.names = FALSE
-)
-xtable(reset_df_n, caption = "Wyniki testu RESET dla modelu końcowego", digits = 4)
-reset_n
-```
-
-### Homoskedastyczność - Test Goldfelda-Quandta (nowy)
-
-```{r}
-gq_n <- gqtest(model_tmp_koncowy)
-gq_df_n <- data.frame(
-  `statystyka` = gq_n$statistic,
-  `df1` = gq_n$parameter[1],
-  `df2` = gq_n$parameter[2],
-  `p-wartość` = gq_n$p.value,
-  check.names = FALSE
-)
-
-
-xtable(gq_df_n, caption = "Test Goldfelda–Quandta", digits = 4)
-gq_n
-
-```
-
-### Autokorelacja składników losowych – Test Durbina-Watsona (nowy)
-
-```{r}
-dw_n <- dwtest(model_tmp_koncowy)
-dw_n
-dw_df_n <- data.frame(
-  "statystyka" = dw_n$statistic,
-  "p-wartość" = dw_n$p.value,
-  check.names = FALSE
-)
-xtable(dw_df_n, caption = "Test Durbina-Watsona", digits = 4)
-```
-
-### Rozkład normalny reszt – Test JBT (nowy)
-
-```{r}
-reszty_n <- resid(model_tmp_koncowy)
-jbt_n <- jarque.bera.test(reszty_n)
-
-model_JBT_df_n <- data.frame(
-  "statystyka" = jbt_n$statistic,
-  "p-wartość" = jbt_n$p.value,
-  check.names = FALSE
-)
-model_JBT_df_n
-xtable(model_JBT_df_n, caption = "Test Jarque-Bera", digits = 4)
 
 ```
 
