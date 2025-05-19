@@ -14,6 +14,8 @@ library(readxl)
 library(lmtest)
 library(tseries)
 library(xtable)
+install.packages("patchwork")
+library(patchwork)
 ```
 
 # Wczytywanie danych i czyszczenie
@@ -135,26 +137,110 @@ summary(model_tmp_koncowy) #%>% xtable()
 
 # Modele jednowymiarowe i trendy
 
-### Dla x1 trendy
+### Modele dla x1
 
 ```{r}
-wykres1 <- ggplot(dane, aes(y = x1, x = Lata))+
-  geom_point()+
-  geom_smooth(method = "lm", se = F)+
-  theme_minimal()
-ggsave("wykres1.png", plot = wykres1, width = 8, height = 6, dpi = 300)
-wykres1
+model_lin <- lm(x1 ~ Lata, data = dane)
+model_parabola <- lm(x1 ~ Lata + I(Lata^2), data = dane)
+model_hiperbola <- lm(x1 ~ I(1 / Lata), data = dane)
+model_wykladniczy <- lm(log(x1) ~ Lata, data = dane)
+model_potegowy <- lm(log(x1) ~ log(Lata), data = dane)
+
+# R^2
+r2_lin <- summary(model_lin)$r.squared
+r2_parabola <- summary(model_parabola)$r.squared
+r2_hiperbola <- summary(model_hiperbola)$r.squared
+r2_wykladniczy <- summary(model_wykladniczy)$r.squared
+r2_potegowy <- summary(model_potegowy)$r.squared
+
+r2_vec <- c(Liniowy = r2_lin,
+            Paraboliczny = r2_parabola,
+            Hiperboliczny = r2_hiperbola,
+            Wykładniczy = r2_wykladniczy,
+            Potęgowy = r2_potegowy)
+
+print(r2_vec)
 ```
 
-### Dla x1 model
+### Predykcje dla x1
 
 ```{r}
-model_x1 <- lm(Lata~x1, data = dane)
-ggplot(dane, aes(x = Lata, y = x1))+
-  geom_point()+
-  geom_smooth(method = "lm", se = F)
-summary(model_x1) %>% 
+dane_pred <- dane %>%
+  mutate(
+    pred_parabola = predict(model_parabola),
+    pred_hiperbola = predict(model_hiperbola),
+    pred_wykladniczy = exp(predict(model_wykladniczy)),
+    pred_potegowy = exp(predict(model_potegowy))
+  )
+dane_pred
+```
+
+### Wykresy dla x1
+
+```{r}
+p1 <- ggplot(dane, aes(x = Lata, y = x1)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "blue") +
+  ggtitle(paste0("Liniowy, R² = ", round(r2_lin, 4))) +
+  theme_minimal()
+
+# 2. Paraboliczny
+p2 <- ggplot(dane, aes(x = Lata, y = x1)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ x + I(x^2), se = FALSE, color = "red") +
+  ggtitle(paste0("Paraboliczny, R² = ", round(r2_parabola, 4))) +
+  theme_minimal()
+
+# 3. Hiperbola
+p3 <- ggplot(dane, aes(x = Lata, y = x1)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ I(1 / x), se = FALSE, color = "purple") +
+  ggtitle(paste0("Hiperboliczny, R² = ", round(r2_hiperbola, 4))) +
+  theme_minimal()
+
+# 4. Wykładniczy
+p4 <- ggplot(dane, aes(x = Lata, y = x1)) +
+  geom_point() +
+  geom_line(aes(y = exp(predict(model_wykladniczy))), color = "green") +
+  ggtitle(paste0("Wykładniczy, R² = ", round(r2_wykladniczy, 4))) +
+  theme_minimal()
+
+# 5. Potęgowy
+p5 <- ggplot(dane, aes(x = Lata, y = x1)) +
+  geom_point() +
+  geom_line(aes(y = exp(predict(model_potegowy))), color = "grey") +
+  ggtitle(paste0("Potęgowy, R² = ", round(r2_potegowy, 4))) +
+  theme_minimal()
+
+```
+
+### Wizualizacja
+
+```{r}
+(p1 | p2) /
+(p3 | p4 | p5)
+```
+
+### Zapis grafiki dla x1
+
+```{r}
+ggsave("modele_siatka_x1.png", p2, width = 10, height = 8, dpi = 300)
+```
+
+### Najlepszy model dla x1
+
+```{r}
+summary(model_parabola) %>% 
   xtable()
+```
+
+### Predykcja x1 na rok 2024
+
+```{r}
+rok_2024 <- 2024
+nowy_rok <- data.frame(Lata = rok_2024)
+pred_2024 <- predict(model_parabola, newdata = nowy_rok)
+pred_2024
 ```
 
 ### Dla x5 model
@@ -385,6 +471,41 @@ xtable(model_JBT_df_n, caption = "Test Jarque-Bera", digits = 4)
 
 ### Dobroć dopasowania modelu do obserwacji
 
+```{r}
+r2 <- summary(model_koncowy)$r.squared
+adj_r2 <- summary(model_koncowy)$adj.r.squared
+
+r2_table <- data.frame(
+  Wskaźnik = c("R-squared", "Adjusted R-squared"),
+  Wartość = round(c(r2, adj_r2), 4)
+) 
+
+r2_table %>% 
+  xtable()
+```
+
+```{r}
+summary(model_koncowy) 
+```
+
 ### Współczynnik zmienności losowej – siła wpływu czynnika losowego
 
+```{r}
+Se <- summary(model_koncowy)$sigma
+
+# Średnia zmiennej objaśnianej
+y_mean <- mean(dane$y)
+
+# Współczynnik zmienności resztowej (w %)
+Ve <- (Se / y_mean) 
+
+# Wyświetlenie wyniku
+Ve
+```
+
 ### Istotność prametrów – pamiętać
+
+```{r}
+summary(model_koncowy) %>% 
+  xtable()
+```
