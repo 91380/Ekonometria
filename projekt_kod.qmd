@@ -42,97 +42,53 @@ dane
 
 # Regresja Krokowa
 
-### Krok 1
+### Krok 1 (x4)
 
 ```{r}
 model <- lm(y ~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9, data = dane)
 summary(model) #%>% xtable()
 ```
 
-### Krok 2
+### Krok 2 (x6)
 
 ```{r}
 model <- lm(y ~ x1 + x2 + x3 + x5 + x6 + x7 + x8 + x9, data = dane)
 summary(model) #%>% xtable()
 ```
 
-### Krok 3
+### Krok 3 (x2)
 
 ```{r}
 model <- lm(y ~ x1 + x2 + x3 + x5 + x7 + x8 + x9, data = dane)
 summary(model) #%>% xtable()
 ```
 
-### Krok 4
+### Krok 4 (x9)
 
 ```{r}
 model <- lm(y ~ x1 + x3 + x5 + x7 + x8 + x9, data = dane)
 summary(model) #%>% xtable()
 ```
 
-### Krok 5
+### Krok 5 (x3)
 
 ```{r}
 model <- lm(y ~ x1 + x3 + x5 + x7 + x8, data = dane)
 summary(model) #%>% xtable()
 ```
 
-### Krok 6
+### Krok 6 (x5)
 
 ```{r}
 model <- lm(y ~ x1 + x5 + x7 + x8, data = dane)
 summary(model) #%>% xtable()
 ```
 
-### Krok 7
+### Krok 7 (istotne)
 
 ```{r}
 model_koncowy <- lm(y ~ x1 + x7 + x8, data = dane)
-summary(model_koncowy)
-```
-
-# Regresja krokowa 2
-
-#### Krok 1 (x4)
-
-```{r}
-model_tmp <- lm(y ~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9, data = dane)
-summary(model_tmp) #%>% xtable()
-```
-
-#### krok 2 (x1)
-
-```{r}
-model_tmp <- lm(y ~ x1 + x2 + x3 + x5 + x6 + x7 + x8 + x9, data = dane)
-summary(model_tmp) #%>% xtable()
-```
-
-#### Krok 3 (x6)
-
-```{r}
-model_tmp <- lm(y ~ x2 + x3 + x5 + x6 + x7 + x8 + x9, data = dane) 
-summary(model_tmp) #%>% xtable()
-```
-
-#### krok 4 ( x2)
-
-```{r}
-model_tmp <- lm(y ~ x2 + x3 + x5 + x7 + x8 + x9, data = dane)
-summary(model_tmp) #%>% xtable()
-```
-
-#### krok 5 (x9)
-
-```{r}
-model_tmp <- lm(y ~ x3 + x5 + x7 + x8 + x9, data = dane)
-summary(model_tmp) #%>% xtable()
-```
-
-#### krok 6 (wszystkie istotne)
-
-```{r}
-model_tmp_koncowy <- lm(y ~ x3 + x5 + x7 + x8, data = dane)
-summary(model_tmp_koncowy) #%>% xtable()
+summary(model_koncowy) #%>% xtable()
 ```
 
 # Modele jednowymiarowe i trendy
@@ -243,98 +199,222 @@ pred_2024 <- predict(model_parabola, newdata = nowy_rok)
 pred_2024
 ```
 
-### Dla x5 model
+### Modele dla zmiennej x7
 
 ```{r}
-model_x2 <- lm(Lata~x5, data = dane)
-summary(model_x2) %>% 
+model_lin_x7 <- lm(x7 ~ Lata, data = dane)
+model_parabola_x7 <- lm(x7 ~ Lata + I(Lata^2), data = dane)
+model_hiperbola_x7 <- lm(x7 ~ I(1 / Lata), data = dane)
+model_wykladniczy_x7 <- lm(log(x7) ~ Lata, data = dane)
+model_potegowy_x7 <- lm(log(x7) ~ log(Lata), data = dane)
+
+# R^2
+r2_lin_x7 <- summary(model_lin_x7)$r.squared
+r2_parabola_x7 <- summary(model_parabola_x7)$r.squared
+r2_hiperbola_x7 <- summary(model_hiperbola_x7)$r.squared
+r2_wykladniczy_x7 <- summary(model_wykladniczy_x7)$r.squared
+r2_potegowy_x7 <- summary(model_potegowy_x7)$r.squared
+
+r2_vec_x7 <- c(Liniowy_x7 = r2_lin_x7,
+            Paraboliczny_x7 = r2_parabola_x7,
+            Hiperboliczny_x7 = r2_hiperbola_x7,
+            Wykładniczy_x7 = r2_wykladniczy_x7,
+            Potęgowy_x7 = r2_potegowy_x7)
+
+print(r2_vec_x7)
+```
+
+### Predykcje dla x7
+
+```{r}
+dane_pred_x7 <- dane %>%
+  mutate(
+    pred_parabola_x7 = predict(model_parabola_x7),
+    pred_hiperbola_x7 = predict(model_hiperbola_x7),
+    pred_wykladniczy_x7 = exp(predict(model_wykladniczy_x7)),
+    pred_potegowy_x7 = exp(predict(model_potegowy_x7))
+  )
+dane_pred_x7
+```
+
+### Wykresy dla x7
+
+```{r}
+p1_x7 <- ggplot(dane, aes(x = Lata, y = x7)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "blue") +
+  ggtitle(paste0("Liniowy, R² = ", round(r2_lin_x7, 4))) +
+  theme_minimal()
+
+# 2. Paraboliczny
+p2_x7 <- ggplot(dane, aes(x = Lata, y = x7)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ x + I(x^2), se = FALSE, color = "red") +
+  ggtitle(paste0("Paraboliczny, R² = ", round(r2_parabola_x7, 4))) +
+  theme_minimal()
+
+# 3. Hiperbola
+p3_x7 <- ggplot(dane, aes(x = Lata, y = x7)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ I(1 / x), se = FALSE, color = "purple") +
+  ggtitle(paste0("Hiperboliczny, R² = ", round(r2_hiperbola_x7, 4))) +
+  theme_minimal()
+
+# 4. Wykładniczy
+p4_x7 <- ggplot(dane, aes(x = Lata, y = x7)) +
+  geom_point() +
+  geom_line(aes(y = exp(predict(model_wykladniczy_x7))), color = "green") +
+  ggtitle(paste0("Wykładniczy, R² = ", round(r2_wykladniczy_x7, 4))) +
+  theme_minimal()
+
+# 5. Potęgowy
+p5_x7 <- ggplot(dane, aes(x = Lata, y = x7)) +
+  geom_point() +
+  geom_line(aes(y = exp(predict(model_potegowy_x7))), color = "grey") +
+  ggtitle(paste0("Potęgowy, R² = ", round(r2_potegowy_x7, 4))) +
+  theme_minimal()
+
+```
+
+### Wizualizacja x7
+
+```{r}
+(p1_x7 | p2_x7) /
+(p3_x7 | p4_x7 | p5_x7)
+```
+
+### Zapis grafiki dla x7
+
+```{r}
+ggsave("modele_siatka_x7.png", p2_x7, width = 10, height = 8, dpi = 300)
+```
+
+### Najlepszy model dla x7
+
+```{r}
+summary(model_parabola_x7) %>% 
   xtable()
 ```
 
-### Dla x2 wykres
+### Predykcja x7 na rok 2024
 
 ```{r}
-wykres2 <- ggplot(dane, aes(y = x5, x = Lata))+
-  geom_point()+
-  geom_smooth(method = "lm", se = F)+
-  theme_minimal()
-wykres2
-#ggsave("wykres2.png", plot = wykres2, width = 8, height = 6, dpi = 300)
+rok_2024_x7 <- 2024
+nowy_rok_x7 <- data.frame(Lata = rok_2024_x7)
+pred_2024_x7 <- predict(model_parabola_x7, newdata = nowy_rok_x7)
+pred_2024_x7
 ```
 
+### Modele dla zmiennej x8
+
 ```{r}
-options(scipen = 999)
-dane$y * 1e9
-summary(lm(y~x8, data = dane))
-ggplot(dane, aes(y = y, x = x8))+
-  geom_point()+
-  geom_smooth(method = "lm", se = F)+  # normalny zapis
-  scale_y_continuous(limits = range(dane$y))+
-  theme_minimal()
+# Modele regresji dla zmiennej x8
+model_lin_x8 <- lm(x8 ~ Lata, data = dane)
+model_parabola_x8 <- lm(x8 ~ Lata + I(Lata^2), data = dane)
+model_hiperbola_x8 <- lm(x8 ~ I(1 / Lata), data = dane)
+model_wykladniczy_x8 <- lm(log(x8) ~ Lata, data = dane)
+model_potegowy_x8 <- lm(log(x8) ~ log(Lata), data = dane)
+
+# R^2
+r2_lin_x8 <- summary(model_lin_x8)$r.squared
+r2_parabola_x8 <- summary(model_parabola_x8)$r.squared
+r2_hiperbola_x8 <- summary(model_hiperbola_x8)$r.squared
+r2_wykladniczy_x8 <- summary(model_wykladniczy_x8)$r.squared
+r2_potegowy_x8 <- summary(model_potegowy_x8)$r.squared
+
+# Wektor R^2
+r2_vec_x8 <- c(
+  Liniowy_x8 = r2_lin_x8,
+  Paraboliczny_x8 = r2_parabola_x8,
+  Hiperboliczny_x8 = r2_hiperbola_x8,
+  Wykładniczy_x8 = r2_wykladniczy_x8,
+  Potęgowy_x8 = r2_potegowy_x8
+)
+
+print(r2_vec_x8)
 ```
 
-### dla x7 (ZMIENIŁEM Y ZAMIAST LAT)
-
-#### dopasowanie liniowe (R\^2 = 0,621)
+### Predykcje dla x8
 
 ```{r}
-model_x7 <- lm(x7~Lata, data = dane)
-summary(model_x7) #%>% xtable()
-
-wykres3 <- ggplot(dane, aes(x = x7, y = y))+
-  geom_point()+
-  geom_smooth(method = "lm", se = F)+
-  theme_minimal()+
-  theme(
-    axis.title = element_text(size = 16),  # rozmiar tytułów osi
-    axis.text = element_text(size = 14),    # rozmiar liczb/etykiet osi
-     plot.background = element_rect(fill = "white", color = NA),
-    panel.background = element_rect(fill = "white", color = NA)
+dane_pred_x8 <- dane %>%
+  mutate(
+    pred_parabola_x8 = predict(model_parabola_x8),
+    pred_hiperbola_x8 = predict(model_hiperbola_x8),
+    pred_wykladniczy_x8 = exp(predict(model_wykladniczy_x8)),
+    pred_potegowy_x8 = exp(predict(model_potegowy_x8))
   )
-wykres3
 
-#ggsave("wykres3.png", plot = wykres3, width = 8, height = 6, dpi = 300)
+dane_pred_x8
 ```
 
-#### dopasowanie hiperboliczne
+### Wykresy dla x8
 
 ```{r}
-model_hiper <- nls(y ~ a / x7 + b, data = dane,
-                   start = list(a = 1, b = 1))  
+# 1. Liniowy
+p1_x8 <- ggplot(dane, aes(x = Lata, y = x8)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "blue") +
+  ggtitle(paste0("Liniowy, R² = ", round(r2_lin_x8, 4))) +
+  theme_minimal()
 
-# Wartości obserwowane i przewidywane
-y_obs <- dane$Lata
-y_pred <- predict(model_hiper)
+# 2. Paraboliczny
+p2_x8 <- ggplot(dane, aes(x = Lata, y = x8)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ x + I(x^2), se = FALSE, color = "red") +
+  ggtitle(paste0("Paraboliczny, R² = ", round(r2_parabola_x8, 4))) +
+  theme_minimal()
 
-# Obliczenie R^2
-ss_res <- sum((y_obs - y_pred)^2)
-ss_tot <- sum((y_obs - mean(y_obs))^2)
-r_squared <- 1 - (ss_res / ss_tot)
+# 3. Hiperbola
+p3_x8 <- ggplot(dane, aes(x = Lata, y = x8)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ I(1 / x), se = FALSE, color = "purple") +
+  ggtitle(paste0("Hiperboliczny, R² = ", round(r2_hiperbola_x8, 4))) +
+  theme_minimal()
 
-# Wynik
-r_squared
+# 4. Wykładniczy
+p4_x8 <- ggplot(dane, aes(x = Lata, y = x8)) +
+  geom_point() +
+  geom_line(aes(y = exp(predict(model_wykladniczy_x8))), color = "green") +
+  ggtitle(paste0("Wykładniczy, R² = ", round(r2_wykladniczy_x8, 4))) +
+  theme_minimal()
+
+# 5. Potęgowy
+p5_x8 <- ggplot(dane, aes(x = Lata, y = x8)) +
+  geom_point() +
+  geom_line(aes(y = exp(predict(model_potegowy_x8))), color = "grey") +
+  ggtitle(paste0("Potęgowy, R² = ", round(r2_potegowy_x8, 4))) +
+  theme_minimal()
+
 ```
 
-### dla x8
+### Wizualizacja x8
 
 ```{r}
-model_x8 <- lm(Lata~x8, data = dane)
-summary(model_x8) #%>% xtable()
+(p1_x8 | p2_x8) /
+(p3_x8 | p4_x8 | p5_x8)
+```
 
-wykres4 <- ggplot(dane, aes(x = Lata, y = x8))+
-  geom_point()+
-  geom_smooth(method = "lm", se = F)+
-   labs(y = "Liczba patentów (w tysiącach)")+
-  theme_minimal()+
-  theme(
-    axis.title = element_text(size = 16),  # rozmiar tytułów osi
-    axis.text = element_text(size = 14),    # rozmiar liczb/etykiet osi
-     plot.background = element_rect(fill = "white", color = NA),
-    panel.background = element_rect(fill = "white", color = NA)
-  )
-wykres4
+### Zapis grafiki dla x8
 
-ggsave("wykres4.png", plot = wykres4, width = 8, height = 6, dpi = 300)
+```{r}
+ggsave("modele_siatka_x8.png", p2_x8, width = 10, height = 8, dpi = 300)
+```
+
+### Najlepszy model dla x8
+
+```{r}
+summary(model_parabola_x8) %>% 
+  xtable()
+```
+
+### Predykcja x8 na rok 2024
+
+```{r}
+rok_2024_x8 <- 2024
+nowy_rok_x8 <- data.frame(Lata = rok_2024_x8)
+pred_2024_x8 <- predict(model_parabola_x8, newdata = nowy_rok_x8)
+pred_2024_x8
 ```
 
 # Testy
@@ -399,72 +479,6 @@ model_JBT_df <- data.frame(
 )
 model_JBT_df
 xtable(model_JBT_df, caption = "Test Jarque-Bera", digits = 4)
-
-```
-
-# Testy (nowe)
-
-### Liniowość – Test RESEST (nowy)
-
-```{r}
-reset_n <- resettest(model_tmp_koncowy) 
-
-reset_df_n <- data.frame(
-  "Statystyka testowa" = reset_n$statistic,
-  "Wartość p" = reset_n$p.value,
-  "Stopnie swobody 1" = reset_n$parameter[1],
-  "Stopnie swobody 2" = reset_n$parameter[2],
-  check.names = FALSE
-)
-xtable(reset_df_n, caption = "Wyniki testu RESET dla modelu końcowego", digits = 4)
-reset_n
-```
-
-### Homoskedastyczność - Test Goldfelda-Quandta (nowy)
-
-```{r}
-gq_n <- gqtest(model_tmp_koncowy)
-gq_df_n <- data.frame(
-  `statystyka` = gq_n$statistic,
-  `df1` = gq_n$parameter[1],
-  `df2` = gq_n$parameter[2],
-  `p-wartość` = gq_n$p.value,
-  check.names = FALSE
-)
-
-
-xtable(gq_df_n, caption = "Test Goldfelda–Quandta", digits = 4)
-gq_n
-
-```
-
-### Autokorelacja składników losowych – Test Durbina-Watsona (nowy)
-
-```{r}
-dw_n <- dwtest(model_tmp_koncowy)
-dw_n
-dw_df_n <- data.frame(
-  "statystyka" = dw_n$statistic,
-  "p-wartość" = dw_n$p.value,
-  check.names = FALSE
-)
-xtable(dw_df_n, caption = "Test Durbina-Watsona", digits = 4)
-```
-
-### Rozkład normalny reszt – Test JBT (nowy)
-
-```{r}
-reszty_n <- resid(model_tmp_koncowy)
-jbt_n <- jarque.bera.test(reszty_n)
-
-model_JBT_df_n <- data.frame(
-  "statystyka" = jbt_n$statistic,
-  "p-wartość" = jbt_n$p.value,
-  check.names = FALSE
-)
-model_JBT_df_n
-xtable(model_JBT_df_n, caption = "Test Jarque-Bera", digits = 4)
-
 ```
 
 # Badanie dobroci modelu
