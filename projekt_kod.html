@@ -103,7 +103,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tseries)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(xtable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(xtable)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="wczytywanie-danych-i-czyszczenie" class="level1">
@@ -147,32 +148,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">y =</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename_with</span>(<span class="at">.cols =</span> <span class="dv">4</span><span class="sc">:</span><span class="fu">ncol</span>(.), <span class="at">.fn =</span> <span class="sc">~</span> <span class="fu">paste0</span>(<span class="st">"x"</span>, <span class="fu">seq_along</span>(.))) <span class="sc">%&gt;%</span> </span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x4 =</span> <span class="fu">round</span>(x4),</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x6 =</span> <span class="fu">round</span>(x6),</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x7 =</span> <span class="fu">round</span>(x7),</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">x8 =</span> <span class="fu">round</span>(x8)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x4 =</span> <span class="fu">round</span>(x4,<span class="dv">2</span>),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x6 =</span> <span class="fu">round</span>(x6,<span class="dv">2</span>),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x7 =</span> <span class="fu">round</span>(x7,<span class="dv">2</span>),</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">x8 =</span> <span class="fu">round</span>(x8,<span class="dv">1</span>)</span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>dane</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 16 × 12
      L.p  Lata     y    x1      x2    x3    x4    x5    x6    x7    x8    x9
    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
- 1     1  2023 1561.  49.5  0.489   5.95    34  903.   593    38    19  3.07
- 2     2  2022 1449.  47.2  0.0198  6.87    35  846.   555    37    18  3.12
- 3     3  2021 1360.  44.2 -0.0584  3.07    35  808.   583    40    17  3.59
- 4     4  2020 1282.  41.5 -0.0584  0.14    35  775.   544    42    17  3.88
- 5     5  2019 1324.  42.5 -0.0508  1.45    35  734.   551    47    17  3.16
- 6     6  2018 1263.  41.4 -0.047   1.73    35  691.   542    47    16  3.38
- 7     7  2017 1204.  40.3 -0.047   1.51    34  655.   550    48    16  3.78
- 8     8  2016 1119.  38.8 -0.045   0.49    34  633.   554    48    15  4.10
- 9     9  2015 1087.  37.8 -0.0247  0.51    34  612.   572    47    15  4.61
-10    10  2014 1040.  36.9 -0.011   0.91    33  595.   586    48    14  4.98
-11    11  2013  989.  35.6  0       1.5     32  574.   616    48    14  5.32
-12    12  2012  984.  34.8  0.0151  2.01    31  560.   619    47    14  5.37
-13    13  2011  941.  34.2  0.0617  2.08    30  544.   679    47    14  5.97
-14    14  2010  856.  32.6  0.0304  1.1     27  503.   720    47    13  7.04
-15    15  2009  819   31    0.0485  0.31    26  474.   716    48    13  7.88
-16    16  2008  811.  32.1  0.422   2.63    25  443.   687    49    13  7.51</code></pre>
+ 1     1  2023 1561.  49.5  0.489   5.95  34.4  903.  593.  38.5  18.7  3.07
+ 2     2  2022 1449.  47.2  0.0198  6.87  34.8  846.  555.  37.2  17.9  3.12
+ 3     3  2021 1360.  44.2 -0.0584  3.07  35.4  808.  583.  39.8  17.4  3.59
+ 4     4  2020 1282.  41.5 -0.0584  0.14  35.4  775.  544.  42.3  16.9  3.88
+ 5     5  2019 1324.  42.5 -0.0508  1.45  34.8  734.  551.  46.6  16.7  3.16
+ 6     6  2018 1263.  41.4 -0.047   1.73  34.6  691.  542.  46.6  16.2  3.38
+ 7     7  2017 1204.  40.3 -0.047   1.51  34.4  655.  550.  47.8  15.8  3.78
+ 8     8  2016 1119.  38.8 -0.045   0.49  34.1  633.  554.  48.5  15.3  4.10
+ 9     9  2015 1087.  37.8 -0.0247  0.51  33.8  612.  572.  47.4  15    4.61
+10    10  2014 1040.  36.9 -0.011   0.91  33.3  595.  586.  48.2  14.3  4.98
+11    11  2013  989.  35.6  0       1.5   32.4  574.  616.  47.6  14    5.32
+12    12  2012  984.  34.8  0.0151  2.01  31.1  560.  619.  46.9  14.2  5.37
+13    13  2011  941.  34.2  0.0617  2.08  29.7  544.  679.  47.2  13.9  5.97
+14    14  2010  856.  32.6  0.0304  1.1   27.1  503.  720.  47.5  13.1  7.04
+15    15  2009  819   31    0.0485  0.31  25.9  474.  716.  47.6  12.8  7.88
+16    16  2008  811.  32.1  0.422   2.63  24.7  443.  687.  49.5  12.5  7.51</code></pre>
 </div>
 </div>
 </section>
@@ -192,164 +193,162 @@ lm(formula = y ~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9,
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--12.021  -4.403  -2.953   3.702  16.015 
+-22.121  -3.443   1.300   3.937  14.517 
 
 Coefficients:
-              Estimate Std. Error t value Pr(&gt;|t|)  
-(Intercept) -7.004e+02  6.957e+02  -1.007   0.3529  
-x1           1.907e+01  7.910e+00   2.411   0.0525 .
-x2          -4.178e+01  3.797e+01  -1.100   0.3134  
-x3           2.953e+00  6.812e+00   0.433   0.6798  
-x4          -4.286e+00  8.017e+00  -0.535   0.6121  
-x5           7.630e-01  4.239e-01   1.800   0.1219  
-x6           6.632e-03  2.143e-01   0.031   0.9763  
-x7           8.541e+00  5.837e+00   1.463   0.1937  
-x8           2.477e+01  1.328e+01   1.866   0.1113  
-x9          -8.343e+00  2.626e+01  -0.318   0.7615  
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+              Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept) -1749.0628  1272.9611  -1.374    0.219
+x1             10.2187    10.8280   0.944    0.382
+x2            -60.2921    52.1994  -1.155    0.292
+x3             14.0124    13.4814   1.039    0.339
+x4             -1.4569     8.5694  -0.170    0.871
+x5              0.8534     0.5707   1.495    0.185
+x6             -0.1724     0.2411  -0.715    0.501
+x7             17.7324    11.4825   1.544    0.173
+x8             72.6840    38.2560   1.900    0.106
+x9             28.6619    44.4050   0.645    0.543
 
-Residual standard error: 12.33 on 6 degrees of freedom
-Multiple R-squared:  0.9988,    Adjusted R-squared:  0.9971 
-F-statistic: 572.9 on 9 and 6 DF,  p-value: 4.198e-08</code></pre>
+Residual standard error: 12.65 on 6 degrees of freedom
+Multiple R-squared:  0.9988,    Adjusted R-squared:  0.9969 
+F-statistic:   544 on 9 and 6 DF,  p-value: 4.901e-08</code></pre>
 </div>
 </div>
 </section>
 <section id="krok-2" class="level3">
 <h3 class="anchored" data-anchor-id="krok-2">Krok 2</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">+</span> x3 <span class="sc">+</span> x4 <span class="sc">+</span> x5 <span class="sc">+</span> x7 <span class="sc">+</span> x8 <span class="sc">+</span> x9, <span class="at">data =</span> dane)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">+</span> x3 <span class="sc">+</span> x5 <span class="sc">+</span> x6 <span class="sc">+</span> x7 <span class="sc">+</span> x8 <span class="sc">+</span> x9, <span class="at">data =</span> dane)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model) <span class="co">#%&gt;% xtable()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
-lm(formula = y ~ x1 + x2 + x3 + x4 + x5 + x7 + x8 + x9, data = dane)
+lm(formula = y ~ x1 + x2 + x3 + x5 + x6 + x7 + x8 + x9, data = dane)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--12.036  -4.471  -3.023   3.767  16.008 
+-22.104  -2.634   1.023   3.579  15.360 
 
 Coefficients:
-             Estimate Std. Error t value Pr(&gt;|t|)  
-(Intercept) -697.7012   639.1105  -1.092   0.3111  
-x1            18.9994     6.9831   2.721   0.0297 *
-x2           -41.9833    34.5999  -1.213   0.2643  
-x3             3.0374     5.7788   0.526   0.6154  
-x4            -4.3641     7.0441  -0.620   0.5552  
-x5             0.7696     0.3400   2.264   0.0580 .
-x7             8.5995     5.1105   1.683   0.1363  
-x8            24.6831    11.9818   2.060   0.0784 .
-x9            -8.1298    23.4614  -0.347   0.7391  
+              Estimate Std. Error t value Pr(&gt;|t|)  
+(Intercept) -1927.7440   666.5711  -2.892   0.0232 *
+x1              9.7423     9.7065   1.004   0.3490  
+x2            -62.3736    47.0922  -1.324   0.2269  
+x3             15.3907     9.9964   1.540   0.1675  
+x5              0.8503     0.5294   1.606   0.1523  
+x6             -0.1758     0.2230  -0.789   0.4563  
+x7             18.8018     8.9153   2.109   0.0729 .
+x8             77.5355    23.6465   3.279   0.0135 *
+x9             34.6241    25.2797   1.370   0.2131  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 11.41 on 7 degrees of freedom
-Multiple R-squared:  0.9988,    Adjusted R-squared:  0.9975 
-F-statistic: 751.8 on 8 and 7 DF,  p-value: 1.433e-09</code></pre>
+Residual standard error: 11.74 on 7 degrees of freedom
+Multiple R-squared:  0.9988,    Adjusted R-squared:  0.9974 
+F-statistic: 710.6 on 8 and 7 DF,  p-value: 1.744e-09</code></pre>
 </div>
 </div>
 </section>
 <section id="krok-3" class="level3">
 <h3 class="anchored" data-anchor-id="krok-3">Krok 3</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">+</span> x3 <span class="sc">+</span> x4 <span class="sc">+</span> x5 <span class="sc">+</span> x7 <span class="sc">+</span> x8, <span class="at">data =</span> dane)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">+</span> x3 <span class="sc">+</span> x5 <span class="sc">+</span> x7 <span class="sc">+</span> x8 <span class="sc">+</span> x9, <span class="at">data =</span> dane)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model) <span class="co">#%&gt;% xtable()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
-lm(formula = y ~ x1 + x2 + x3 + x4 + x5 + x7 + x8, data = dane)
+lm(formula = y ~ x1 + x2 + x3 + x5 + x7 + x8 + x9, data = dane)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--12.247  -3.796  -2.730   3.561  16.621 
+-21.959  -1.588   0.287   4.861  14.196 
 
 Coefficients:
-             Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) -913.4649   135.9233  -6.720  0.00015 ***
-x1            19.5516     6.4140   3.048  0.01586 *  
-x2           -45.0255    31.5734  -1.426  0.19168    
-x3             4.1005     4.6200   0.888  0.40068    
-x4            -2.2542     3.3419  -0.675  0.51899    
-x5             0.7893     0.3162   2.496  0.03719 *  
-x7             9.7236     3.7254   2.610  0.03113 *  
-x8            26.0915    10.6335   2.454  0.03971 *  
+              Estimate Std. Error t value Pr(&gt;|t|)  
+(Intercept) -1654.6934   555.9330  -2.976   0.0177 *
+x1             13.6695     8.1319   1.681   0.1313  
+x2            -46.6969    41.6681  -1.121   0.2949  
+x3             10.0419     7.1668   1.401   0.1987  
+x5              0.6176     0.4290   1.440   0.1879  
+x7             14.5225     6.9038   2.104   0.0686 .
+x8             70.9952    21.6142   3.285   0.0111 *
+x9             18.8015    15.0070   1.253   0.2456  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 10.77 on 8 degrees of freedom
-Multiple R-squared:  0.9988,    Adjusted R-squared:  0.9978 
-F-statistic: 965.3 on 7 and 8 DF,  p-value: 4.577e-11</code></pre>
+Residual standard error: 11.46 on 8 degrees of freedom
+Multiple R-squared:  0.9987,    Adjusted R-squared:  0.9975 
+F-statistic: 852.3 on 7 and 8 DF,  p-value: 7.523e-11</code></pre>
 </div>
 </div>
 </section>
 <section id="krok-4" class="level3">
 <h3 class="anchored" data-anchor-id="krok-4">Krok 4</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">+</span> x3 <span class="sc">+</span> x5 <span class="sc">+</span> x7 <span class="sc">+</span> x8, <span class="at">data =</span> dane)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x3 <span class="sc">+</span> x5 <span class="sc">+</span> x7 <span class="sc">+</span> x8 <span class="sc">+</span> x9, <span class="at">data =</span> dane)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model) <span class="co">#%&gt;% xtable()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
-lm(formula = y ~ x1 + x2 + x3 + x5 + x7 + x8, data = dane)
+lm(formula = y ~ x1 + x3 + x5 + x7 + x8 + x9, data = dane)
 
 Residuals:
      Min       1Q   Median       3Q      Max 
--13.3254  -5.0853  -0.7095   3.1531  17.2992 
+-22.2179  -3.8446   0.0217   4.1111  14.1284 
 
 Coefficients:
-             Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) -889.3039   127.0867  -6.998 6.34e-05 ***
-x1            18.5591     6.0510   3.067   0.0134 *  
-x2           -30.8016    22.7765  -1.352   0.2093    
-x3             4.1633     4.4770   0.930   0.3767    
-x5             0.7210     0.2904   2.483   0.0348 *  
-x7             8.5950     3.2261   2.664   0.0259 *  
-x8            28.4718     9.7224   2.928   0.0168 *  
+              Estimate Std. Error t value Pr(&gt;|t|)  
+(Intercept) -1181.3665   366.5986  -3.223   0.0104 *
+x1             13.8767     8.2446   1.683   0.1266  
+x3              5.3335     5.8881   0.906   0.3886  
+x5              0.4253     0.3987   1.067   0.3139  
+x7              9.4246     5.2667   1.789   0.1072  
+x8             67.6435    21.7085   3.116   0.0124 *
+x9              5.0299     8.7358   0.576   0.5789  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 10.44 on 9 degrees of freedom
-Multiple R-squared:  0.9988,    Adjusted R-squared:  0.9979 
-F-statistic:  1199 on 6 and 9 DF,  p-value: 1.539e-12</code></pre>
+Residual standard error: 11.62 on 9 degrees of freedom
+Multiple R-squared:  0.9985,    Adjusted R-squared:  0.9974 
+F-statistic: 966.7 on 6 and 9 DF,  p-value: 4.044e-12</code></pre>
 </div>
 </div>
 </section>
 <section id="krok-5" class="level3">
 <h3 class="anchored" data-anchor-id="krok-5">Krok 5</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">+</span> x5 <span class="sc">+</span> x7 <span class="sc">+</span> x8, <span class="at">data =</span> dane)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x3 <span class="sc">+</span> x5 <span class="sc">+</span> x7 <span class="sc">+</span> x8, <span class="at">data =</span> dane)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model) <span class="co">#%&gt;% xtable()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
-lm(formula = y ~ x1 + x2 + x5 + x7 + x8, data = dane)
+lm(formula = y ~ x1 + x3 + x5 + x7 + x8, data = dane)
 
 Residuals:
-    Min      1Q  Median      3Q     Max 
--13.848  -4.352  -2.096   2.867  17.451 
+     Min       1Q   Median       3Q      Max 
+-22.5568  -3.2011  -0.2807   2.5416  15.7535 
 
 Coefficients:
              Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) -806.7406    90.3131  -8.933 4.43e-06 ***
-x1            23.0126     3.6734   6.265 9.33e-05 ***
-x2           -27.3356    22.3171  -1.225  0.24869    
-x5             0.5246     0.1979   2.650  0.02429 *  
-x7             6.0899     1.7631   3.454  0.00618 ** 
-x8            28.0847     9.6476   2.911  0.01554 *  
+(Intercept) -997.1959   173.0300  -5.763 0.000182 ***
+x1            14.7312     7.8342   1.880 0.089468 .  
+x3             4.4976     5.5123   0.816 0.433556    
+x5             0.3627     0.3705   0.979 0.350797    
+x7             7.6059     4.0710   1.868 0.091262 .  
+x8            63.1912    19.5949   3.225 0.009100 ** 
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 10.37 on 10 degrees of freedom
-Multiple R-squared:  0.9986,    Adjusted R-squared:  0.9979 
-F-statistic:  1458 on 5 and 10 DF,  p-value: 5.649e-14</code></pre>
+Residual standard error: 11.23 on 10 degrees of freedom
+Multiple R-squared:  0.9984,    Adjusted R-squared:  0.9976 
+F-statistic:  1243 on 5 and 10 DF,  p-value: 1.252e-13</code></pre>
 </div>
 </div>
 </section>
 <section id="krok-6" class="level3">
 <h3 class="anchored" data-anchor-id="krok-6">Krok 6</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>model_koncowy <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x5 <span class="sc">+</span> x7 <span class="sc">+</span> x8, <span class="at">data =</span> dane)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_koncowy)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x5 <span class="sc">+</span> x7 <span class="sc">+</span> x8, <span class="at">data =</span> dane)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model) <span class="co">#%&gt;% xtable()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -357,96 +356,421 @@ lm(formula = y ~ x1 + x5 + x7 + x8, data = dane)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--13.551  -6.472  -1.119   3.333  18.600 
+-23.897  -4.414   0.295   4.319  14.360 
 
 Coefficients:
              Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) -838.8670    88.3641  -9.493 1.24e-06 ***
-x1            21.1369     3.4141   6.191 6.80e-05 ***
-x5             0.6828     0.1533   4.455 0.000970 ***
-x7             7.4075     1.4283   5.186 0.000301 ***
-x8            24.2477     9.3301   2.599 0.024744 *  
+(Intercept) -882.8827    99.9831  -8.830 2.52e-06 ***
+x1            20.4193     3.5194   5.802 0.000119 ***
+x5             0.1575     0.2680   0.588 0.568613    
+x7             4.6602     1.8522   2.516 0.028681 *  
+x8            59.3450    18.7282   3.169 0.008938 ** 
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 10.6 on 11 degrees of freedom
-Multiple R-squared:  0.9984,    Adjusted R-squared:  0.9979 
-F-statistic:  1743 on 4 and 11 DF,  p-value: 2.5e-15</code></pre>
+Residual standard error: 11.05 on 11 degrees of freedom
+Multiple R-squared:  0.9983,    Adjusted R-squared:  0.9977 
+F-statistic:  1602 on 4 and 11 DF,  p-value: 3.966e-15</code></pre>
+</div>
+</div>
+</section>
+<section id="krok-7" class="level3">
+<h3 class="anchored" data-anchor-id="krok-7">Krok 7</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>model_koncowy <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x7 <span class="sc">+</span> x8, <span class="at">data =</span> dane)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_koncowy)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ x1 + x7 + x8, data = dane)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-23.919  -4.329  -1.490   5.956  14.949 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) -897.659     94.093  -9.540 5.94e-07 ***
+x1            20.684      3.394   6.095 5.38e-05 ***
+x7             3.891      1.275   3.052     0.01 *  
+x8            68.591      9.878   6.944 1.55e-05 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 10.75 on 12 degrees of freedom
+Multiple R-squared:  0.9982,    Adjusted R-squared:  0.9978 
+F-statistic:  2260 on 3 and 12 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="regresja-krokowa-2" class="level1">
+<h1>Regresja krokowa 2</h1>
+<section id="krok-1-x4" class="level4">
+<h4 class="anchored" data-anchor-id="krok-1-x4">Krok 1 (x4)</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>model_tmp <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">+</span> x3 <span class="sc">+</span> x4 <span class="sc">+</span> x5 <span class="sc">+</span> x6 <span class="sc">+</span> x7 <span class="sc">+</span> x8 <span class="sc">+</span> x9, <span class="at">data =</span> dane)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_tmp) <span class="co">#%&gt;% xtable()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9, 
+    data = dane)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-22.121  -3.443   1.300   3.937  14.517 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept) -1749.0628  1272.9611  -1.374    0.219
+x1             10.2187    10.8280   0.944    0.382
+x2            -60.2921    52.1994  -1.155    0.292
+x3             14.0124    13.4814   1.039    0.339
+x4             -1.4569     8.5694  -0.170    0.871
+x5              0.8534     0.5707   1.495    0.185
+x6             -0.1724     0.2411  -0.715    0.501
+x7             17.7324    11.4825   1.544    0.173
+x8             72.6840    38.2560   1.900    0.106
+x9             28.6619    44.4050   0.645    0.543
+
+Residual standard error: 12.65 on 6 degrees of freedom
+Multiple R-squared:  0.9988,    Adjusted R-squared:  0.9969 
+F-statistic:   544 on 9 and 6 DF,  p-value: 4.901e-08</code></pre>
+</div>
+</div>
+</section>
+<section id="krok-2-x1" class="level4">
+<h4 class="anchored" data-anchor-id="krok-2-x1">krok 2 (x1)</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>model_tmp <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">+</span> x3 <span class="sc">+</span> x5 <span class="sc">+</span> x6 <span class="sc">+</span> x7 <span class="sc">+</span> x8 <span class="sc">+</span> x9, <span class="at">data =</span> dane)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_tmp) <span class="co">#%&gt;% xtable()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ x1 + x2 + x3 + x5 + x6 + x7 + x8 + x9, data = dane)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-22.104  -2.634   1.023   3.579  15.360 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)  
+(Intercept) -1927.7440   666.5711  -2.892   0.0232 *
+x1              9.7423     9.7065   1.004   0.3490  
+x2            -62.3736    47.0922  -1.324   0.2269  
+x3             15.3907     9.9964   1.540   0.1675  
+x5              0.8503     0.5294   1.606   0.1523  
+x6             -0.1758     0.2230  -0.789   0.4563  
+x7             18.8018     8.9153   2.109   0.0729 .
+x8             77.5355    23.6465   3.279   0.0135 *
+x9             34.6241    25.2797   1.370   0.2131  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 11.74 on 7 degrees of freedom
+Multiple R-squared:  0.9988,    Adjusted R-squared:  0.9974 
+F-statistic: 710.6 on 8 and 7 DF,  p-value: 1.744e-09</code></pre>
+</div>
+</div>
+</section>
+<section id="krok-3-x6" class="level4">
+<h4 class="anchored" data-anchor-id="krok-3-x6">Krok 3 (x6)</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>model_tmp <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x2 <span class="sc">+</span> x3 <span class="sc">+</span> x5 <span class="sc">+</span> x6 <span class="sc">+</span> x7 <span class="sc">+</span> x8 <span class="sc">+</span> x9, <span class="at">data =</span> dane) </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_tmp) <span class="co">#%&gt;% xtable()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ x2 + x3 + x5 + x6 + x7 + x8 + x9, data = dane)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-20.673  -2.764   1.221   3.673  17.134 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)   
+(Intercept) -2278.2439   568.0367  -4.011  0.00389 **
+x2            -73.4491    45.8022  -1.604  0.14747   
+x3             23.5421     5.8312   4.037  0.00375 **
+x5              1.2351     0.3652   3.382  0.00961 **
+x6             -0.2907     0.1915  -1.518  0.16750   
+x7             25.0652     6.3700   3.935  0.00433 **
+x8             89.9587    20.1576   4.463  0.00210 **
+x9             46.5735    22.3110   2.087  0.07029 . 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 11.75 on 8 degrees of freedom
+Multiple R-squared:  0.9986,    Adjusted R-squared:  0.9974 
+F-statistic: 811.2 on 7 and 8 DF,  p-value: 9.165e-11</code></pre>
+</div>
+</div>
+</section>
+<section id="krok-4-x2" class="level4">
+<h4 class="anchored" data-anchor-id="krok-4-x2">krok 4 ( x2)</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>model_tmp <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x2 <span class="sc">+</span> x3 <span class="sc">+</span> x5 <span class="sc">+</span> x7 <span class="sc">+</span> x8 <span class="sc">+</span> x9, <span class="at">data =</span> dane)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_tmp) <span class="co">#%&gt;% xtable()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ x2 + x3 + x5 + x7 + x8 + x9, data = dane)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-20.8092  -2.3182  -0.0355   5.1560  16.1284 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)   
+(Intercept) -1982.577    570.954  -3.472  0.00702 **
+x2            -48.290     45.687  -1.057  0.31807   
+x3             18.913      5.318   3.556  0.00616 **
+x5              1.061      0.371   2.860  0.01879 * 
+x7             21.128      6.225   3.394  0.00795 **
+x8             86.520     21.432   4.037  0.00294 **
+x9             21.877     16.336   1.339  0.21334   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 12.57 on 9 degrees of freedom
+Multiple R-squared:  0.9982,    Adjusted R-squared:  0.997 
+F-statistic: 826.3 on 6 and 9 DF,  p-value: 8.18e-12</code></pre>
+</div>
+</div>
+</section>
+<section id="krok-5-x9" class="level4">
+<h4 class="anchored" data-anchor-id="krok-5-x9">krok 5 (x9)</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>model_tmp <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x3 <span class="sc">+</span> x5 <span class="sc">+</span> x7 <span class="sc">+</span> x8 <span class="sc">+</span> x9, <span class="at">data =</span> dane)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_tmp) <span class="co">#%&gt;% xtable()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ x3 + x5 + x7 + x8 + x9, data = dane)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-20.251  -5.473   0.204   4.830  16.089 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) -1497.9943   342.2755  -4.377 0.001385 ** 
+x3             14.1805     2.8866   4.913 0.000612 ***
+x5              0.8690     0.3254   2.671 0.023461 *  
+x7             15.9574     3.8725   4.121 0.002075 ** 
+x8             83.2956    21.3379   3.904 0.002944 ** 
+x9              7.6767     9.3475   0.821 0.430643    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 12.64 on 10 degrees of freedom
+Multiple R-squared:  0.998, Adjusted R-squared:  0.9969 
+F-statistic: 979.8 on 5 and 10 DF,  p-value: 4.103e-13</code></pre>
+</div>
+</div>
+</section>
+<section id="krok-6-wszystkie-istotne" class="level4">
+<h4 class="anchored" data-anchor-id="krok-6-wszystkie-istotne">krok 6 (wszystkie istotne)</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>model_tmp_koncowy <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x3 <span class="sc">+</span> x5 <span class="sc">+</span> x7 <span class="sc">+</span> x8, <span class="at">data =</span> dane)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_tmp_koncowy) <span class="co">#%&gt;% xtable()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ x3 + x5 + x7 + x8, data = dane)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-20.914  -3.966   1.174   4.835  19.330 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) -1238.2539   128.9121  -9.605  1.1e-06 ***
+x3             13.7213     2.7897   4.919 0.000458 ***
+x5              0.8133     0.3135   2.594 0.024941 *  
+x7             13.7232     2.7149   5.055 0.000369 ***
+x8             77.7932    19.9567   3.898 0.002485 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 12.45 on 11 degrees of freedom
+Multiple R-squared:  0.9978,    Adjusted R-squared:  0.997 
+F-statistic:  1262 on 4 and 11 DF,  p-value: 1.47e-14</code></pre>
 </div>
 </div>
 </section>
 </section>
 <section id="modele-jednowymiarowe-i-trendy" class="level1">
 <h1>Modele jednowymiarowe i trendy</h1>
-<section id="dla-x1-trendy" class="level3">
-<h3 class="anchored" data-anchor-id="dla-x1-trendy">Dla x1 trendy</h3>
+<section id="modele-dla-zmiennej-x1" class="level3">
+<h3 class="anchored" data-anchor-id="modele-dla-zmiennej-x1">Modele dla zmiennej x1</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>wykres1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dane, <span class="fu">aes</span>(<span class="at">y =</span> x1, <span class="at">x =</span> Lata))<span class="sc">+</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> F)<span class="sc">+</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"wykres1.png"</span>, <span class="at">plot =</span> wykres1, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">6</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>model_lin <span class="ot">&lt;-</span> <span class="fu">lm</span>(x1 <span class="sc">~</span> Lata, <span class="at">data =</span> dane)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>model_parabola <span class="ot">&lt;-</span> <span class="fu">lm</span>(x1 <span class="sc">~</span> Lata <span class="sc">+</span> <span class="fu">I</span>(Lata<span class="sc">^</span><span class="dv">2</span>), <span class="at">data =</span> dane)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>model_hiperbola <span class="ot">&lt;-</span> <span class="fu">lm</span>(x1 <span class="sc">~</span> <span class="fu">I</span>(<span class="dv">1</span> <span class="sc">/</span> Lata), <span class="at">data =</span> dane)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>model_wykladniczy <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(x1) <span class="sc">~</span> Lata, <span class="at">data =</span> dane)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>model_potegowy <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(x1) <span class="sc">~</span> <span class="fu">log</span>(Lata), <span class="at">data =</span> dane)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="co"># R^2</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>r2_lin <span class="ot">&lt;-</span> <span class="fu">summary</span>(model_lin)<span class="sc">$</span>r.squared</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>r2_parabola <span class="ot">&lt;-</span> <span class="fu">summary</span>(model_parabola)<span class="sc">$</span>r.squared</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>r2_hiperbola <span class="ot">&lt;-</span> <span class="fu">summary</span>(model_hiperbola)<span class="sc">$</span>r.squared</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>r2_wykladniczy <span class="ot">&lt;-</span> <span class="fu">summary</span>(model_wykladniczy)<span class="sc">$</span>r.squared</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>r2_potegowy <span class="ot">&lt;-</span> <span class="fu">summary</span>(model_potegowy)<span class="sc">$</span>r.squared</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>r2_vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">Liniowy =</span> r2_lin,</span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>            <span class="at">Paraboliczny =</span> r2_parabola,</span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">Hiperboliczny =</span> r2_hiperbola,</span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>            Wykładniczy <span class="ot">=</span> r2_wykladniczy,</span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>            Potęgowy <span class="ot">=</span> r2_potegowy)</span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(r2_vec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      Liniowy  Paraboliczny Hiperboliczny   Wykładniczy      Potęgowy 
+    0.9617194     0.9757171     0.9612440     0.9748940     0.9747833 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>wykres1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
+</section>
+<section id="predykcje-dla-x1" class="level3">
+<h3 class="anchored" data-anchor-id="predykcje-dla-x1">Predykcje dla x1</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>dane_pred <span class="ot">&lt;-</span> dane <span class="sc">%&gt;%</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">pred_parabola =</span> <span class="fu">predict</span>(model_parabola),</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">pred_hiperbola =</span> <span class="fu">predict</span>(model_hiperbola),</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">pred_wykladniczy =</span> <span class="fu">exp</span>(<span class="fu">predict</span>(model_wykladniczy)),</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">pred_potegowy =</span> <span class="fu">exp</span>(<span class="fu">predict</span>(model_potegowy))</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>dane_pred</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 16 × 16
+     L.p  Lata     y    x1      x2    x3    x4    x5    x6    x7    x8    x9
+   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1     1  2023 1561.  49.5  0.489   5.95  34.4  903.  593.  38.5  18.7  3.07
+ 2     2  2022 1449.  47.2  0.0198  6.87  34.8  846.  555.  37.2  17.9  3.12
+ 3     3  2021 1360.  44.2 -0.0584  3.07  35.4  808.  583.  39.8  17.4  3.59
+ 4     4  2020 1282.  41.5 -0.0584  0.14  35.4  775.  544.  42.3  16.9  3.88
+ 5     5  2019 1324.  42.5 -0.0508  1.45  34.8  734.  551.  46.6  16.7  3.16
+ 6     6  2018 1263.  41.4 -0.047   1.73  34.6  691.  542.  46.6  16.2  3.38
+ 7     7  2017 1204.  40.3 -0.047   1.51  34.4  655.  550.  47.8  15.8  3.78
+ 8     8  2016 1119.  38.8 -0.045   0.49  34.1  633.  554.  48.5  15.3  4.10
+ 9     9  2015 1087.  37.8 -0.0247  0.51  33.8  612.  572.  47.4  15    4.61
+10    10  2014 1040.  36.9 -0.011   0.91  33.3  595.  586.  48.2  14.3  4.98
+11    11  2013  989.  35.6  0       1.5   32.4  574.  616.  47.6  14    5.32
+12    12  2012  984.  34.8  0.0151  2.01  31.1  560.  619.  46.9  14.2  5.37
+13    13  2011  941.  34.2  0.0617  2.08  29.7  544.  679.  47.2  13.9  5.97
+14    14  2010  856.  32.6  0.0304  1.1   27.1  503.  720.  47.5  13.1  7.04
+15    15  2009  819   31    0.0485  0.31  25.9  474.  716.  47.6  12.8  7.88
+16    16  2008  811.  32.1  0.422   2.63  24.7  443.  687.  49.5  12.5  7.51
+# ℹ 4 more variables: pred_parabola &lt;dbl&gt;, pred_hiperbola &lt;dbl&gt;,
+#   pred_wykladniczy &lt;dbl&gt;, pred_potegowy &lt;dbl&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="wykresy-dla-x1" class="level3">
+<h3 class="anchored" data-anchor-id="wykresy-dla-x1">Wykresy dla x1</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dane, <span class="fu">aes</span>(<span class="at">x =</span> Lata, <span class="at">y =</span> x1)) <span class="sc">+</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="fu">paste0</span>(<span class="st">"Liniowy, R² = "</span>, <span class="fu">round</span>(r2_lin, <span class="dv">4</span>))) <span class="sc">+</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Paraboliczny</span></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dane, <span class="fu">aes</span>(<span class="at">x =</span> Lata, <span class="at">y =</span> x1)) <span class="sc">+</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> y <span class="sc">~</span> x <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">2</span>), <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="fu">paste0</span>(<span class="st">"Paraboliczny, R² = "</span>, <span class="fu">round</span>(r2_parabola, <span class="dv">4</span>))) <span class="sc">+</span></span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Hiperbola</span></span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dane, <span class="fu">aes</span>(<span class="at">x =</span> Lata, <span class="at">y =</span> x1)) <span class="sc">+</span></span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> y <span class="sc">~</span> <span class="fu">I</span>(<span class="dv">1</span> <span class="sc">/</span> x), <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"purple"</span>) <span class="sc">+</span></span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="fu">paste0</span>(<span class="st">"Hiperboliczny, R² = "</span>, <span class="fu">round</span>(r2_hiperbola, <span class="dv">4</span>))) <span class="sc">+</span></span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Wykładniczy</span></span>
+<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>p4 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dane, <span class="fu">aes</span>(<span class="at">x =</span> Lata, <span class="at">y =</span> x1)) <span class="sc">+</span></span>
+<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb36-24"><a href="#cb36-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">exp</span>(<span class="fu">predict</span>(model_wykladniczy))), <span class="at">color =</span> <span class="st">"green"</span>) <span class="sc">+</span></span>
+<span id="cb36-25"><a href="#cb36-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="fu">paste0</span>(<span class="st">"Wykładniczy, R² = "</span>, <span class="fu">round</span>(r2_wykladniczy, <span class="dv">4</span>))) <span class="sc">+</span></span>
+<span id="cb36-26"><a href="#cb36-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb36-27"><a href="#cb36-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-28"><a href="#cb36-28" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Potęgowy</span></span>
+<span id="cb36-29"><a href="#cb36-29" aria-hidden="true" tabindex="-1"></a>p5 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dane, <span class="fu">aes</span>(<span class="at">x =</span> Lata, <span class="at">y =</span> x1)) <span class="sc">+</span></span>
+<span id="cb36-30"><a href="#cb36-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb36-31"><a href="#cb36-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">exp</span>(<span class="fu">predict</span>(model_potegowy))), <span class="at">color =</span> <span class="st">"grey"</span>) <span class="sc">+</span></span>
+<span id="cb36-32"><a href="#cb36-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="fu">paste0</span>(<span class="st">"Potęgowy, R² = "</span>, <span class="fu">round</span>(r2_potegowy, <span class="dv">4</span>))) <span class="sc">+</span></span>
+<span id="cb36-33"><a href="#cb36-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="wizualizacja" class="level3">
+<h3 class="anchored" data-anchor-id="wizualizacja">Wizualizacja</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>(p1 <span class="sc">|</span> p2) <span class="sc">/</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>(p3 <span class="sc">|</span> p4 <span class="sc">|</span> p5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="projekt_kod_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="projekt_kod_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="dla-x1-model" class="level3">
-<h3 class="anchored" data-anchor-id="dla-x1-model">Dla x1 model</h3>
+<section id="zapis-grafiki-dla-x1" class="level3">
+<h3 class="anchored" data-anchor-id="zapis-grafiki-dla-x1">Zapis grafiki dla x1</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>model_x1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Lata<span class="sc">~</span>x1, <span class="at">data =</span> dane)</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dane, <span class="fu">aes</span>(<span class="at">x =</span> Lata, <span class="at">y =</span> x1))<span class="sc">+</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"modele_siatka_x1.png"</span>, p2, <span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">8</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="projekt_kod_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_x1) <span class="sc">%&gt;%</span> </span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xtable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="najlepszy-model-dla-x1" class="level3">
+<h3 class="anchored" data-anchor-id="najlepszy-model-dla-x1">Najlepszy model dla x1</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_parabola) <span class="sc">%&gt;%</span> </span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xtable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>% latex table generated in R 4.3.1 by xtable 1.8-4 package
-% Thu May  8 12:54:27 2025
+% Mon May 19 11:31:37 2025
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrrrr}
   \hline
  &amp; Estimate &amp; Std. Error &amp; t value &amp; Pr($&gt;$$|$t$|$) \\ 
   \hline
-(Intercept) &amp; 1982.1270 &amp; 1.7957 &amp; 1103.79 &amp; 0.0000 \\ 
-  x1 &amp; 0.8608 &amp; 0.0459 &amp; 18.75 &amp; 0.0000 \\ 
+(Intercept) &amp; 131366.6552 &amp; 48796.8674 &amp; 2.69 &amp; 0.0185 \\ 
+  Lata &amp; -131.4358 &amp; 48.4218 &amp; -2.71 &amp; 0.0177 \\ 
+  I(Lata\verb|^|2) &amp; 0.0329 &amp; 0.0120 &amp; 2.74 &amp; 0.0169 \\ 
    \hline
 \end{tabular}
 \end{table}</code></pre>
 </div>
 </div>
 </section>
+<section id="predykcja-x1-na-rok-2024" class="level3">
+<h3 class="anchored" data-anchor-id="predykcja-x1-na-rok-2024">Predykcja x1 na rok 2024</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>rok_2024 <span class="ot">&lt;-</span> <span class="dv">2024</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>nowy_rok <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Lata =</span> rok_2024)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>pred_2024 <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_parabola, <span class="at">newdata =</span> nowy_rok)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>pred_2024</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      1 
+49.9413 </code></pre>
+</div>
+</div>
+</section>
 <section id="dla-x5-model" class="level3">
 <h3 class="anchored" data-anchor-id="dla-x5-model">Dla x5 model</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>model_x2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Lata<span class="sc">~</span>x5, <span class="at">data =</span> dane)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_x2) <span class="sc">%&gt;%</span> </span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xtable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>model_x2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Lata<span class="sc">~</span>x5, <span class="at">data =</span> dane)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_x2) <span class="sc">%&gt;%</span> </span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xtable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>% latex table generated in R 4.3.1 by xtable 1.8-4 package
-% Thu May  8 12:54:28 2025
+% Mon May 19 11:31:37 2025
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrrrr}
@@ -464,33 +788,33 @@ F-statistic:  1743 on 4 and 11 DF,  p-value: 2.5e-15</code></pre>
 <section id="dla-x2-wykres" class="level3">
 <h3 class="anchored" data-anchor-id="dla-x2-wykres">Dla x2 wykres</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>wykres2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dane, <span class="fu">aes</span>(<span class="at">y =</span> x5, <span class="at">x =</span> Lata))<span class="sc">+</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> F)<span class="sc">+</span></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>wykres2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>wykres2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dane, <span class="fu">aes</span>(<span class="at">y =</span> x5, <span class="at">x =</span> Lata))<span class="sc">+</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> F)<span class="sc">+</span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>wykres2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="projekt_kod_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="projekt_kod_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co">#ggsave("wykres2.png", plot = wykres2, width = 8, height = 6, dpi = 300)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co">#ggsave("wykres2.png", plot = wykres2, width = 8, height = 6, dpi = 300)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen =</span> <span class="dv">999</span>)</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>dane<span class="sc">$</span>y <span class="sc">*</span> <span class="fl">1e9</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen =</span> <span class="dv">999</span>)</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>dane<span class="sc">$</span>y <span class="sc">*</span> <span class="fl">1e9</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] 1560660000000 1448980000000 1360440000000 1281650000000 1324120000000
  [6] 1262510000000 1204420000000 1119310000000 1086860000000 1040310000000
 [11]  988640000000  983640000000  941380000000  856160000000  819000000000
 [16]  811030000000</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(y<span class="sc">~</span>x8, <span class="at">data =</span> dane))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(y<span class="sc">~</span>x8, <span class="at">data =</span> dane))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -498,24 +822,24 @@ lm(formula = y ~ x8, data = dane)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--51.332 -17.103  -5.088  18.183  67.173 
+-43.187 -12.673  -2.492  18.179  29.930 
 
 Coefficients:
-            Estimate Std. Error t value          Pr(&gt;|t|)    
-(Intercept) -706.138     70.661  -9.993 0.000000094196369 ***
-x8           119.948      4.582  26.178 0.000000000000273 ***
+            Estimate Std. Error t value             Pr(&gt;|t|)    
+(Intercept) -719.130     45.534  -15.79 0.000000000256884662 ***
+x8           120.945      2.956   40.91 0.000000000000000568 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 33.5 on 14 degrees of freedom
-Multiple R-squared:   0.98, Adjusted R-squared:  0.9785 
-F-statistic: 685.3 on 1 and 14 DF,  p-value: 0.0000000000002725</code></pre>
+Residual standard error: 21.56 on 14 degrees of freedom
+Multiple R-squared:  0.9917,    Adjusted R-squared:  0.9911 
+F-statistic:  1674 on 1 and 14 DF,  p-value: 0.0000000000000005684</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dane, <span class="fu">aes</span>(<span class="at">y =</span> y, <span class="at">x =</span> x8))<span class="sc">+</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> F)<span class="sc">+</span>  <span class="co"># normalny zapis</span></span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">range</span>(dane<span class="sc">$</span>y))<span class="sc">+</span></span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dane, <span class="fu">aes</span>(<span class="at">y =</span> y, <span class="at">x =</span> x8))<span class="sc">+</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> F)<span class="sc">+</span>  <span class="co"># normalny zapis</span></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">range</span>(dane<span class="sc">$</span>y))<span class="sc">+</span></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
@@ -525,9 +849,136 @@ F-statistic: 685.3 on 1 and 14 DF,  p-value: 0.0000000000002725</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="projekt_kod_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="projekt_kod_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
+</div>
+</div>
+</section>
+<section id="dla-x7-zmieniłem-y-zamiast-lat" class="level3">
+<h3 class="anchored" data-anchor-id="dla-x7-zmieniłem-y-zamiast-lat">dla x7 (ZMIENIŁEM Y ZAMIAST LAT)</h3>
+<section id="dopasowanie-liniowe-r2-0621" class="level4">
+<h4 class="anchored" data-anchor-id="dopasowanie-liniowe-r2-0621">dopasowanie liniowe (R^2 = 0,621)</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>model_x7 <span class="ot">&lt;-</span> <span class="fu">lm</span>(x7<span class="sc">~</span>Lata, <span class="at">data =</span> dane)</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_x7) <span class="co">#%&gt;% xtable()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = x7 ~ Lata, data = dane)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-4.2079 -1.7406 -0.6643  1.8880  3.3014 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 1335.9340   264.7370   5.046 0.000179 ***
+Lata          -0.6402     0.1314  -4.874 0.000246 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.422 on 14 degrees of freedom
+Multiple R-squared:  0.6292,    Adjusted R-squared:  0.6027 
+F-statistic: 23.76 on 1 and 14 DF,  p-value: 0.0002459</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>wykres3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dane, <span class="fu">aes</span>(<span class="at">x =</span> x7, <span class="at">y =</span> y))<span class="sc">+</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> F)<span class="sc">+</span></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>),  <span class="co"># rozmiar tytułów osi</span></span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>),    <span class="co"># rozmiar liczb/etykiet osi</span></span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"white"</span>, <span class="at">color =</span> <span class="cn">NA</span>),</span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"white"</span>, <span class="at">color =</span> <span class="cn">NA</span>)</span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a>wykres3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="projekt_kod_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co">#ggsave("wykres3.png", plot = wykres3, width = 8, height = 6, dpi = 300)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="dopasowanie-hiperboliczne" class="level4">
+<h4 class="anchored" data-anchor-id="dopasowanie-hiperboliczne">dopasowanie hiperboliczne</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>model_hiper <span class="ot">&lt;-</span> <span class="fu">nls</span>(y <span class="sc">~</span> a <span class="sc">/</span> x7 <span class="sc">+</span> b, <span class="at">data =</span> dane,</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">start =</span> <span class="fu">list</span>(<span class="at">a =</span> <span class="dv">1</span>, <span class="at">b =</span> <span class="dv">1</span>))  </span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Wartości obserwowane i przewidywane</span></span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>y_obs <span class="ot">&lt;-</span> dane<span class="sc">$</span>Lata</span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>y_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_hiper)</span>
+<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Obliczenie R^2</span></span>
+<span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a>ss_res <span class="ot">&lt;-</span> <span class="fu">sum</span>((y_obs <span class="sc">-</span> y_pred)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb60-10"><a href="#cb60-10" aria-hidden="true" tabindex="-1"></a>ss_tot <span class="ot">&lt;-</span> <span class="fu">sum</span>((y_obs <span class="sc">-</span> <span class="fu">mean</span>(y_obs))<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb60-11"><a href="#cb60-11" aria-hidden="true" tabindex="-1"></a>r_squared <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> (ss_res <span class="sc">/</span> ss_tot)</span>
+<span id="cb60-12"><a href="#cb60-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-13"><a href="#cb60-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Wynik</span></span>
+<span id="cb60-14"><a href="#cb60-14" aria-hidden="true" tabindex="-1"></a>r_squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -38245.4</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="dla-x8" class="level3">
+<h3 class="anchored" data-anchor-id="dla-x8">dla x8</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>model_x8 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Lata<span class="sc">~</span>x8, <span class="at">data =</span> dane)</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_x8) <span class="co">#%&gt;% xtable()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Lata ~ x8, data = dane)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-1.0461 -0.3051  0.1098  0.2953  0.9933 
+
+Coefficients:
+             Estimate Std. Error t value             Pr(&gt;|t|)    
+(Intercept) 1977.1286     1.2845 1539.20 &lt; 0.0000000000000002 ***
+x8             2.5090     0.0834   30.08   0.0000000000000401 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.6082 on 14 degrees of freedom
+Multiple R-squared:  0.9848,    Adjusted R-squared:  0.9837 
+F-statistic:   905 on 1 and 14 DF,  p-value: 0.00000000000004014</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>wykres4 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dane, <span class="fu">aes</span>(<span class="at">x =</span> Lata, <span class="at">y =</span> x8))<span class="sc">+</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> F)<span class="sc">+</span></span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Liczba patentów (w tysiącach)"</span>)<span class="sc">+</span></span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>),  <span class="co"># rozmiar tytułów osi</span></span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>),    <span class="co"># rozmiar liczb/etykiet osi</span></span>
+<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"white"</span>, <span class="at">color =</span> <span class="cn">NA</span>),</span>
+<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"white"</span>, <span class="at">color =</span> <span class="cn">NA</span>)</span>
+<span id="cb64-11"><a href="#cb64-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb64-12"><a href="#cb64-12" aria-hidden="true" tabindex="-1"></a>wykres4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="projekt_kod_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"wykres4.png"</span>, <span class="at">plot =</span> wykres4, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">6</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
 </div>
 </section>
@@ -537,64 +988,62 @@ F-statistic: 685.3 on 1 and 14 DF,  p-value: 0.0000000000002725</code></pre>
 <section id="liniowość-test-resest" class="level3">
 <h3 class="anchored" data-anchor-id="liniowość-test-resest">Liniowość – Test RESEST</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>reset <span class="ot">&lt;-</span> <span class="fu">resettest</span>(model_koncowy) </span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>reset_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Statystyka testowa"</span> <span class="ot">=</span> reset<span class="sc">$</span>statistic,</span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Wartość p"</span> <span class="ot">=</span> reset<span class="sc">$</span>p.value,</span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Stopnie swobody 1"</span> <span class="ot">=</span> reset<span class="sc">$</span>parameter[<span class="dv">1</span>],</span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Stopnie swobody 2"</span> <span class="ot">=</span> reset<span class="sc">$</span>parameter[<span class="dv">2</span>],</span>
-<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">check.names =</span> <span class="cn">FALSE</span></span>
-<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a><span class="co">#xtable(reset_df, caption = "Wyniki testu RESET dla modelu końcowego", digits = 4)</span></span>
-<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>reset</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>reset <span class="ot">&lt;-</span> <span class="fu">resettest</span>(model_koncowy) </span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>reset_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Statystyka testowa"</span> <span class="ot">=</span> reset<span class="sc">$</span>statistic,</span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Wartość p"</span> <span class="ot">=</span> reset<span class="sc">$</span>p.value,</span>
+<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Stopnie swobody 1"</span> <span class="ot">=</span> reset<span class="sc">$</span>parameter[<span class="dv">1</span>],</span>
+<span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Stopnie swobody 2"</span> <span class="ot">=</span> reset<span class="sc">$</span>parameter[<span class="dv">2</span>],</span>
+<span id="cb68-8"><a href="#cb68-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">check.names =</span> <span class="cn">FALSE</span></span>
+<span id="cb68-9"><a href="#cb68-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb68-10"><a href="#cb68-10" aria-hidden="true" tabindex="-1"></a><span class="co">#xtable(reset_df, caption = "Wyniki testu RESET dla modelu końcowego", digits = 4)</span></span>
+<span id="cb68-11"><a href="#cb68-11" aria-hidden="true" tabindex="-1"></a>reset</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     RESET test
 
 data:  model_koncowy
-RESET = 0.31165, df1 = 2, df2 = 9, p-value = 0.7398</code></pre>
+RESET = 0.44486, df1 = 2, df2 = 10, p-value = 0.653</code></pre>
 </div>
 </div>
 </section>
 <section id="homoskedastyczność---test-goldfelda-quandta" class="level3">
 <h3 class="anchored" data-anchor-id="homoskedastyczność---test-goldfelda-quandta">Homoskedastyczność - Test Goldfelda-Quandta</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>gq <span class="ot">&lt;-</span> <span class="fu">gqtest</span>(model_koncowy)</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>gq_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">statystyka</span><span class="st">`</span> <span class="ot">=</span> gq<span class="sc">$</span>statistic,</span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">df1</span><span class="st">`</span> <span class="ot">=</span> gq<span class="sc">$</span>parameter[<span class="dv">1</span>],</span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">df2</span><span class="st">`</span> <span class="ot">=</span> gq<span class="sc">$</span>parameter[<span class="dv">2</span>],</span>
-<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">p-wartość</span><span class="st">`</span> <span class="ot">=</span> gq<span class="sc">$</span>p.value,</span>
-<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">check.names =</span> <span class="cn">FALSE</span></span>
-<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a><span class="fu">xtable</span>(gq_df, <span class="at">caption =</span> <span class="st">"Test Goldfelda–Quandta"</span>, <span class="at">digits =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>gq <span class="ot">&lt;-</span> <span class="fu">gqtest</span>(model_koncowy)</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>gq_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">statystyka</span><span class="st">`</span> <span class="ot">=</span> gq<span class="sc">$</span>statistic,</span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">df1</span><span class="st">`</span> <span class="ot">=</span> gq<span class="sc">$</span>parameter[<span class="dv">1</span>],</span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">df2</span><span class="st">`</span> <span class="ot">=</span> gq<span class="sc">$</span>parameter[<span class="dv">2</span>],</span>
+<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">p-wartość</span><span class="st">`</span> <span class="ot">=</span> gq<span class="sc">$</span>p.value,</span>
+<span id="cb70-7"><a href="#cb70-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">check.names =</span> <span class="cn">FALSE</span></span>
+<span id="cb70-8"><a href="#cb70-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb70-9"><a href="#cb70-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-10"><a href="#cb70-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-11"><a href="#cb70-11" aria-hidden="true" tabindex="-1"></a><span class="fu">xtable</span>(gq_df, <span class="at">caption =</span> <span class="st">"Test Goldfelda–Quandta"</span>, <span class="at">digits =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>% latex table generated in R 4.3.1 by xtable 1.8-4 package
-% Thu May  8 12:54:29 2025
+% Mon May 19 11:31:40 2025
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrrrr}
   \hline
  &amp; statystyka &amp; df1 &amp; df2 &amp; p-wartość \\ 
   \hline
-GQ &amp; 0.6247 &amp; 3.0000 &amp; 3.0000 &amp; 0.6457 \\ 
+GQ &amp; 0.7122 &amp; 4.0000 &amp; 4.0000 &amp; 0.6249 \\ 
    \hline
 \end{tabular}
 \caption{Test Goldfelda–Quandta} 
 \end{table}</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>gq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>gq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Goldfeld-Quandt test
 
 data:  model_koncowy
-GQ = 0.62471, df1 = 3, df2 = 3, p-value = 0.6457
+GQ = 0.71222, df1 = 4, df2 = 4, p-value = 0.6249
 alternative hypothesis: variance increases from segment 1 to 2</code></pre>
 </div>
 </div>
@@ -602,28 +1051,221 @@ alternative hypothesis: variance increases from segment 1 to 2</code></pre>
 <section id="autokorelacja-składników-losowych-test-durbina-watsona" class="level3">
 <h3 class="anchored" data-anchor-id="autokorelacja-składników-losowych-test-durbina-watsona">Autokorelacja składników losowych – Test Durbina-Watsona</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dwtest</span>(model_koncowy)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>dw <span class="ot">&lt;-</span> <span class="fu">dwtest</span>(model_koncowy)</span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>dw</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Durbin-Watson test
 
 data:  model_koncowy
-DW = 2.347, p-value = 0.4757
+DW = 1.5611, p-value = 0.04774
 alternative hypothesis: true autocorrelation is greater than 0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>dw_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"statystyka"</span> <span class="ot">=</span> dw<span class="sc">$</span>statistic,</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"p-wartość"</span> <span class="ot">=</span> dw<span class="sc">$</span>p.value,</span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">check.names =</span> <span class="cn">FALSE</span></span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a><span class="fu">xtable</span>(dw_df, <span class="at">caption =</span> <span class="st">"Test Durbina-Watsona"</span>, <span class="at">digits =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>% latex table generated in R 4.3.1 by xtable 1.8-4 package
+% Mon May 19 11:31:40 2025
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrr}
+  \hline
+ &amp; statystyka &amp; p-wartość \\ 
+  \hline
+DW &amp; 1.5611 &amp; 0.0477 \\ 
+   \hline
+\end{tabular}
+\caption{Test Durbina-Watsona} 
+\end{table}</code></pre>
 </div>
 </div>
 </section>
 <section id="rozkład-normalny-reszt-test-jbt" class="level3">
 <h3 class="anchored" data-anchor-id="rozkład-normalny-reszt-test-jbt">Rozkład normalny reszt – Test JBT</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>reszty <span class="ot">&lt;-</span> <span class="fu">resid</span>(model_koncowy)</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">jarque.bera.test</span>(reszty)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>reszty <span class="ot">&lt;-</span> <span class="fu">resid</span>(model_koncowy)</span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>jbt <span class="ot">&lt;-</span> <span class="fu">jarque.bera.test</span>(reszty)</span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a>model_JBT_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb78-5"><a href="#cb78-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"statystyka"</span> <span class="ot">=</span> jbt<span class="sc">$</span>statistic,</span>
+<span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"p-wartość"</span> <span class="ot">=</span> jbt<span class="sc">$</span>p.value,</span>
+<span id="cb78-7"><a href="#cb78-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">check.names =</span> <span class="cn">FALSE</span></span>
+<span id="cb78-8"><a href="#cb78-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb78-9"><a href="#cb78-9" aria-hidden="true" tabindex="-1"></a>model_JBT_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          statystyka p-wartość
+X-squared   1.222036 0.5427981</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xtable</span>(model_JBT_df, <span class="at">caption =</span> <span class="st">"Test Jarque-Bera"</span>, <span class="at">digits =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>% latex table generated in R 4.3.1 by xtable 1.8-4 package
+% Mon May 19 11:31:40 2025
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrr}
+  \hline
+ &amp; statystyka &amp; p-wartość \\ 
+  \hline
+X-squared &amp; 1.2220 &amp; 0.5428 \\ 
+   \hline
+\end{tabular}
+\caption{Test Jarque-Bera} 
+\end{table}</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="testy-nowe" class="level1">
+<h1>Testy (nowe)</h1>
+<section id="liniowość-test-resest-nowy" class="level3">
+<h3 class="anchored" data-anchor-id="liniowość-test-resest-nowy">Liniowość – Test RESEST (nowy)</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>reset_n <span class="ot">&lt;-</span> <span class="fu">resettest</span>(model_tmp_koncowy) </span>
+<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb82-3"><a href="#cb82-3" aria-hidden="true" tabindex="-1"></a>reset_df_n <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb82-4"><a href="#cb82-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Statystyka testowa"</span> <span class="ot">=</span> reset_n<span class="sc">$</span>statistic,</span>
+<span id="cb82-5"><a href="#cb82-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Wartość p"</span> <span class="ot">=</span> reset_n<span class="sc">$</span>p.value,</span>
+<span id="cb82-6"><a href="#cb82-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Stopnie swobody 1"</span> <span class="ot">=</span> reset_n<span class="sc">$</span>parameter[<span class="dv">1</span>],</span>
+<span id="cb82-7"><a href="#cb82-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Stopnie swobody 2"</span> <span class="ot">=</span> reset_n<span class="sc">$</span>parameter[<span class="dv">2</span>],</span>
+<span id="cb82-8"><a href="#cb82-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">check.names =</span> <span class="cn">FALSE</span></span>
+<span id="cb82-9"><a href="#cb82-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb82-10"><a href="#cb82-10" aria-hidden="true" tabindex="-1"></a><span class="fu">xtable</span>(reset_df_n, <span class="at">caption =</span> <span class="st">"Wyniki testu RESET dla modelu końcowego"</span>, <span class="at">digits =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>% latex table generated in R 4.3.1 by xtable 1.8-4 package
+% Mon May 19 11:31:40 2025
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrr}
+  \hline
+ &amp; Statystyka testowa &amp; Wartość p &amp; Stopnie swobody 1 &amp; Stopnie swobody 2 \\ 
+  \hline
+RESET &amp; 2.1482 &amp; 0.1727 &amp;     2 &amp;     9 \\ 
+   \hline
+\end{tabular}
+\caption{Wyniki testu RESET dla modelu końcowego} 
+\end{table}</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>reset_n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-    Jarque Bera Test
+    RESET test
 
-data:  reszty
-X-squared = 1.0277, df = 2, p-value = 0.5982</code></pre>
+data:  model_tmp_koncowy
+RESET = 2.1482, df1 = 2, df2 = 9, p-value = 0.1727</code></pre>
+</div>
+</div>
+</section>
+<section id="homoskedastyczność---test-goldfelda-quandta-nowy" class="level3">
+<h3 class="anchored" data-anchor-id="homoskedastyczność---test-goldfelda-quandta-nowy">Homoskedastyczność - Test Goldfelda-Quandta (nowy)</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>gq_n <span class="ot">&lt;-</span> <span class="fu">gqtest</span>(model_tmp_koncowy)</span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>gq_df_n <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">statystyka</span><span class="st">`</span> <span class="ot">=</span> gq_n<span class="sc">$</span>statistic,</span>
+<span id="cb86-4"><a href="#cb86-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">df1</span><span class="st">`</span> <span class="ot">=</span> gq_n<span class="sc">$</span>parameter[<span class="dv">1</span>],</span>
+<span id="cb86-5"><a href="#cb86-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">df2</span><span class="st">`</span> <span class="ot">=</span> gq_n<span class="sc">$</span>parameter[<span class="dv">2</span>],</span>
+<span id="cb86-6"><a href="#cb86-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">p-wartość</span><span class="st">`</span> <span class="ot">=</span> gq_n<span class="sc">$</span>p.value,</span>
+<span id="cb86-7"><a href="#cb86-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">check.names =</span> <span class="cn">FALSE</span></span>
+<span id="cb86-8"><a href="#cb86-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb86-9"><a href="#cb86-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-10"><a href="#cb86-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-11"><a href="#cb86-11" aria-hidden="true" tabindex="-1"></a><span class="fu">xtable</span>(gq_df_n, <span class="at">caption =</span> <span class="st">"Test Goldfelda–Quandta"</span>, <span class="at">digits =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>% latex table generated in R 4.3.1 by xtable 1.8-4 package
+% Mon May 19 11:31:40 2025
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrr}
+  \hline
+ &amp; statystyka &amp; df1 &amp; df2 &amp; p-wartość \\ 
+  \hline
+GQ &amp; 0.9647 &amp; 3.0000 &amp; 3.0000 &amp; 0.5114 \\ 
+   \hline
+\end{tabular}
+\caption{Test Goldfelda–Quandta} 
+\end{table}</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>gq_n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Goldfeld-Quandt test
+
+data:  model_tmp_koncowy
+GQ = 0.96468, df1 = 3, df2 = 3, p-value = 0.5114
+alternative hypothesis: variance increases from segment 1 to 2</code></pre>
+</div>
+</div>
+</section>
+<section id="autokorelacja-składników-losowych-test-durbina-watsona-nowy" class="level3">
+<h3 class="anchored" data-anchor-id="autokorelacja-składników-losowych-test-durbina-watsona-nowy">Autokorelacja składników losowych – Test Durbina-Watsona (nowy)</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>dw_n <span class="ot">&lt;-</span> <span class="fu">dwtest</span>(model_tmp_koncowy)</span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>dw_n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Durbin-Watson test
+
+data:  model_tmp_koncowy
+DW = 1.7197, p-value = 0.08403
+alternative hypothesis: true autocorrelation is greater than 0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a>dw_df_n <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"statystyka"</span> <span class="ot">=</span> dw_n<span class="sc">$</span>statistic,</span>
+<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"p-wartość"</span> <span class="ot">=</span> dw_n<span class="sc">$</span>p.value,</span>
+<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">check.names =</span> <span class="cn">FALSE</span></span>
+<span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb92-6"><a href="#cb92-6" aria-hidden="true" tabindex="-1"></a><span class="fu">xtable</span>(dw_df_n, <span class="at">caption =</span> <span class="st">"Test Durbina-Watsona"</span>, <span class="at">digits =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>% latex table generated in R 4.3.1 by xtable 1.8-4 package
+% Mon May 19 11:31:40 2025
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrr}
+  \hline
+ &amp; statystyka &amp; p-wartość \\ 
+  \hline
+DW &amp; 1.7197 &amp; 0.0840 \\ 
+   \hline
+\end{tabular}
+\caption{Test Durbina-Watsona} 
+\end{table}</code></pre>
+</div>
+</div>
+</section>
+<section id="rozkład-normalny-reszt-test-jbt-nowy" class="level3">
+<h3 class="anchored" data-anchor-id="rozkład-normalny-reszt-test-jbt-nowy">Rozkład normalny reszt – Test JBT (nowy)</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>reszty_n <span class="ot">&lt;-</span> <span class="fu">resid</span>(model_tmp_koncowy)</span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>jbt_n <span class="ot">&lt;-</span> <span class="fu">jarque.bera.test</span>(reszty_n)</span>
+<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a>model_JBT_df_n <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"statystyka"</span> <span class="ot">=</span> jbt_n<span class="sc">$</span>statistic,</span>
+<span id="cb94-6"><a href="#cb94-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"p-wartość"</span> <span class="ot">=</span> jbt_n<span class="sc">$</span>p.value,</span>
+<span id="cb94-7"><a href="#cb94-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">check.names =</span> <span class="cn">FALSE</span></span>
+<span id="cb94-8"><a href="#cb94-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb94-9"><a href="#cb94-9" aria-hidden="true" tabindex="-1"></a>model_JBT_df_n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          statystyka p-wartość
+X-squared  0.3292208 0.8482241</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xtable</span>(model_JBT_df_n, <span class="at">caption =</span> <span class="st">"Test Jarque-Bera"</span>, <span class="at">digits =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>% latex table generated in R 4.3.1 by xtable 1.8-4 package
+% Mon May 19 11:31:40 2025
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrr}
+  \hline
+ &amp; statystyka &amp; p-wartość \\ 
+  \hline
+X-squared &amp; 0.3292 &amp; 0.8482 \\ 
+   \hline
+\end{tabular}
+\caption{Test Jarque-Bera} 
+\end{table}</code></pre>
 </div>
 </div>
 </section>
@@ -632,12 +1274,100 @@ X-squared = 1.0277, df = 2, p-value = 0.5982</code></pre>
 <h1>Badanie dobroci modelu</h1>
 <section id="dobroć-dopasowania-modelu-do-obserwacji" class="level3">
 <h3 class="anchored" data-anchor-id="dobroć-dopasowania-modelu-do-obserwacji">Dobroć dopasowania modelu do obserwacji</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a>r2 <span class="ot">&lt;-</span> <span class="fu">summary</span>(model_koncowy)<span class="sc">$</span>r.squared</span>
+<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a>adj_r2 <span class="ot">&lt;-</span> <span class="fu">summary</span>(model_koncowy)<span class="sc">$</span>adj.r.squared</span>
+<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb98-4"><a href="#cb98-4" aria-hidden="true" tabindex="-1"></a>r2_table <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb98-5"><a href="#cb98-5" aria-hidden="true" tabindex="-1"></a>  Wskaźnik <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"R-squared"</span>, <span class="st">"Adjusted R-squared"</span>),</span>
+<span id="cb98-6"><a href="#cb98-6" aria-hidden="true" tabindex="-1"></a>  Wartość <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">c</span>(r2, adj_r2), <span class="dv">4</span>)</span>
+<span id="cb98-7"><a href="#cb98-7" aria-hidden="true" tabindex="-1"></a>) </span>
+<span id="cb98-8"><a href="#cb98-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb98-9"><a href="#cb98-9" aria-hidden="true" tabindex="-1"></a>r2_table <span class="sc">%&gt;%</span> </span>
+<span id="cb98-10"><a href="#cb98-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xtable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>% latex table generated in R 4.3.1 by xtable 1.8-4 package
+% Mon May 19 11:31:40 2025
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlr}
+  \hline
+ &amp; Wskaźnik &amp; Wartość \\ 
+  \hline
+1 &amp; R-squared &amp; 1.00 \\ 
+  2 &amp; Adjusted R-squared &amp; 1.00 \\ 
+   \hline
+\end{tabular}
+\end{table}</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_koncowy) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ x1 + x7 + x8, data = dane)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-23.919  -4.329  -1.490   5.956  14.949 
+
+Coefficients:
+            Estimate Std. Error t value    Pr(&gt;|t|)    
+(Intercept) -897.659     94.093  -9.540 0.000000594 ***
+x1            20.684      3.394   6.095 0.000053805 ***
+x7             3.891      1.275   3.052        0.01 *  
+x8            68.591      9.878   6.944 0.000015528 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 10.75 on 12 degrees of freedom
+Multiple R-squared:  0.9982,    Adjusted R-squared:  0.9978 
+F-statistic:  2260 on 3 and 12 DF,  p-value: &lt; 0.00000000000000022</code></pre>
+</div>
+</div>
 </section>
 <section id="współczynnik-zmienności-losowej-siła-wpływu-czynnika-losowego" class="level3">
 <h3 class="anchored" data-anchor-id="współczynnik-zmienności-losowej-siła-wpływu-czynnika-losowego">Współczynnik zmienności losowej – siła wpływu czynnika losowego</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a>Se <span class="ot">&lt;-</span> <span class="fu">summary</span>(model_koncowy)<span class="sc">$</span>sigma</span>
+<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-3"><a href="#cb102-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Średnia zmiennej objaśnianej</span></span>
+<span id="cb102-4"><a href="#cb102-4" aria-hidden="true" tabindex="-1"></a>y_mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(dane<span class="sc">$</span>y)</span>
+<span id="cb102-5"><a href="#cb102-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-6"><a href="#cb102-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Współczynnik zmienności resztowej (w %)</span></span>
+<span id="cb102-7"><a href="#cb102-7" aria-hidden="true" tabindex="-1"></a>Ve <span class="ot">&lt;-</span> (Se <span class="sc">/</span> y_mean) </span>
+<span id="cb102-8"><a href="#cb102-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-9"><a href="#cb102-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Wyświetlenie wyniku</span></span>
+<span id="cb102-10"><a href="#cb102-10" aria-hidden="true" tabindex="-1"></a>Ve</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.009507223</code></pre>
+</div>
+</div>
 </section>
 <section id="istotność-prametrów-pamiętać" class="level3">
 <h3 class="anchored" data-anchor-id="istotność-prametrów-pamiętać">Istotność prametrów – pamiętać</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_koncowy) <span class="sc">%&gt;%</span> </span>
+<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xtable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>% latex table generated in R 4.3.1 by xtable 1.8-4 package
+% Mon May 19 11:31:41 2025
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrr}
+  \hline
+ &amp; Estimate &amp; Std. Error &amp; t value &amp; Pr($&gt;$$|$t$|$) \\ 
+  \hline
+(Intercept) &amp; -897.6593 &amp; 94.0934 &amp; -9.54 &amp; 0.0000 \\ 
+  x1 &amp; 20.6841 &amp; 3.3939 &amp; 6.09 &amp; 0.0001 \\ 
+  x7 &amp; 3.8914 &amp; 1.2751 &amp; 3.05 &amp; 0.0100 \\ 
+  x8 &amp; 68.5911 &amp; 9.8785 &amp; 6.94 &amp; 0.0000 \\ 
+   \hline
+\end{tabular}
+\end{table}</code></pre>
+</div>
+</div>
 </section>
 </section>
 
