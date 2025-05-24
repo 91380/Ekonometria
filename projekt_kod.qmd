@@ -45,7 +45,7 @@ dane
 
 ```{r}
 model <- lm(y ~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9, data = dane)
-summary(model) %>% xtable()
+summary(model) #%>% xtable()
 ```
 
 ### Krok 2 (x6)
@@ -185,8 +185,7 @@ ggsave("modele_siatka_x1.png", p2, width = 10, height = 8, dpi = 300)
 ### Najlepszy model dla x1
 
 ```{r}
-summary(model_parabola) %>% 
-  xtable()
+summary(model_parabola)
 ```
 
 ### Predykcja x1 na rok 2024
@@ -407,7 +406,6 @@ ggsave("modele_siatka_x8.png", razem, width = 10, height = 8, dpi = 300)
 
 ```{r}
 summary(model_parabola_x8) 
-#%>% xtable()
 ```
 
 ### Predykcja x8 na rok 2024
@@ -450,7 +448,7 @@ gq_df <- data.frame(
 )
 
 
-xtable(gq_df, caption = "Test Goldfelda–Quandta", digits = 4)
+#xtable(gq_df, caption = "Test Goldfelda–Quandta", digits = 4)
 gq
 ```
 
@@ -464,7 +462,7 @@ dw_df <- data.frame(
   "p-wartość" = dw$p.value,
   check.names = FALSE
 )
-xtable(dw_df, caption = "Test Durbina-Watsona", digits = 4)
+#xtable(dw_df, caption = "Test Durbina-Watsona", digits = 4)
 
 ```
 
@@ -480,7 +478,7 @@ model_JBT_df <- data.frame(
   check.names = FALSE
 )
 model_JBT_df
-xtable(model_JBT_df, caption = "Test Jarque-Bera", digits = 4)
+#xtable(model_JBT_df, caption = "Test Jarque-Bera", digits = 4)
 ```
 
 # Badanie dobroci modelu
@@ -496,8 +494,7 @@ r2_table <- data.frame(
   Wartość = round(c(r2, adj_r2), 4)
 ) 
 
-r2_table %>% 
-  xtable()
+r2_table 
 ```
 
 ```{r}
@@ -509,24 +506,20 @@ summary(model_koncowy)
 ```{r}
 Se <- summary(model_koncowy)$sigma
 
-# Średnia zmiennej objaśnianej
 y_mean <- mean(dane$y)
 
-# Współczynnik zmienności resztowej (w %)
 Ve <- (Se / y_mean) 
 
-# Wyświetlenie wyniku
 Ve
 ```
 
-### Istotność prametrów – pamiętać
+### Istotność prametrów 
 
 ```{r}
-summary(model_koncowy) %>% 
-  xtable()
+summary(model_koncowy)
 ```
 
-### Prognoza Y\^ na rok 2024
+# Prognoza Y\^ na rok 2024
 
 ```{r}
 pred_data_set <- data.frame(
